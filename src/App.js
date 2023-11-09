@@ -1,5 +1,8 @@
+import Dashboard from "./components/Dashboard/Dashboard";
+import ThemeContainer from "./containers/ThemeContainer";
+
 function App() {
-  return <div>FUZZY VIKOR </div>;
+  return <ThemeContainer dashboard={<Dashboard />} />;
 }
 
 export default App;
