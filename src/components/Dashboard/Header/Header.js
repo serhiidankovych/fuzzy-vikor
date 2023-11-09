@@ -7,31 +7,28 @@ import { IoMenu } from "react-icons/io5";
 
 export default function Header({ handleDisplaySetup }) {
   return (
-    <Box>
+    <Box sx={{ margin: "10px" }}>
       <AppBar
         position="static"
         sx={{
           flexDirection: "row",
-          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-          backdropFilter: "blur(5px)",
-          WebkitBackdropFilter: "blur(5px)",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
+          borderRadius: "15px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          padding: "10px",
         }}
       >
         <Typography
-          variant="h4"
+          variant="h5"
           color="textSecondary"
           sx={{
             fontWeight: "900",
             textAlign: "center",
             fontFamily: "Inconsolata",
-            flexGrow: 1, // Use flexGrow to center the Typography
           }}
         >
-          fuzzy vikor
+          vikor
         </Typography>
 
         <IconButton onClick={handleDisplaySetup} color="green">

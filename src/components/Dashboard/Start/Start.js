@@ -19,7 +19,7 @@ function Start({ handleDisplaySetup }) {
             justifyContent: "space-evenly",
             alignItems: "center",
             borderRadius: "15px",
-            height: "100vh",
+            height: "80vh",
             flexWrap: "wrap",
           }}
         >
@@ -32,12 +32,13 @@ function Start({ handleDisplaySetup }) {
               justifyContent: " center",
               textAlign: "justify",
               gap: "7px",
+              padding: "20px",
             }}
           >
             <Typography
               variant="h2"
+              fontFamily={"Inconsolata"}
               sx={{
-                fontFamily: "Inconsolata",
                 fontWeight: "900",
               }}
               color="textPrimary"
@@ -50,7 +51,9 @@ function Start({ handleDisplaySetup }) {
               ranks alternatives and determines the solution named compromise
               that is the closest to the ideal.
             </Typography>
-            <Typography color="textSecondary">by Serafim Opricovic</Typography>
+            <Typography color="textSecondary" fontFamily={"Inconsolata"}>
+              by Serafim Opricovic
+            </Typography>
             <Button
               variant="contained"
               color="green"

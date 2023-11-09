@@ -15,6 +15,11 @@ export default function ThemeContainer({ dashboard }) {
   let darkTheme = createTheme({
     palette: {
       mode: "dark",
+
+      secondary: {
+        main: "#00ed71",
+      },
+
       text: {
         primary: "#f0f0f0",
         secondary: "#f700c6",
@@ -28,8 +33,34 @@ export default function ThemeContainer({ dashboard }) {
       },
     },
     components: {
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            "& .MuiInputBase-root.Mui-focused": {
+              color: "#00ed71",
+            },
+          },
+        },
+      },
+
       MuiTabPanel: {
         styleOverrides: { root: { padding: 0 } },
+      },
+      MuiTabsIndicatorSpan: {
+        styleOverrides: {
+          root: {
+            backgroundColor: "#f700c6",
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            background: " rgb(31,31,31)",
+            background:
+              " linear-gradient(135deg, rgba(31,31,31,1) 0%, rgba(18,18,18,1) 72%)",
+          },
+        },
       },
     },
     typography: {
