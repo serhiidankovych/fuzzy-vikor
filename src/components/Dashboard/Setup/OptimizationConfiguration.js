@@ -19,43 +19,20 @@ import {
 import { IoArrowForward, IoArrowBackOutline } from "react-icons/io5";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setMaxMinConfiguration } from "../../../store/actions/maxMinConfigurationActions";
+import { setOptimizationConfiguration } from "../../../store/actions/optimizationConfigurationActions";
 
-export default function MaxMinConfiguration({ handleSetupStep }) {
+export default function OptimizationConfiguration({ handleSetupStep }) {
   const dispatch = useDispatch();
-  const maxMin = useSelector((state) => state.maxMinConfiguration);
 
-  const criteriaLinguisticTerms = useSelector(
-    (state) => state.criteriaConfiguration
-  );
-
+  const optimization = useSelector((state) => state.optimizationConfiguration);
   const names = useSelector((state) => state.nameConfiguration);
 
-  const [selectedItems, setSelectedItems] = React.useState(maxMin.maxMin || {});
-
-  const [linguisticTerms, setLinguisticTerms] = React.useState(
-    criteriaLinguisticTerms.criteriaLinguisticTerms || {}
+  const [selectedItems, setSelectedItems] = React.useState(
+    optimization.optimization || {}
   );
 
-  useEffect(() => {
-    setLinguisticTerms(criteriaLinguisticTerms.criteriaLinguisticTerms);
-  }, [criteriaLinguisticTerms]);
-
-  useEffect(() => {
-    // Iterate over selectedItems and update the linguisticTerm based on the updated linguisticTerms
-    const updatedSelectedItems = {};
-    Object.keys(selectedItems).forEach((itemId) => {
-      const currentItem = selectedItems[itemId];
-      const updatedOption = linguisticTerms.find(
-        (option) => option.id === currentItem.id
-      );
-      updatedSelectedItems[itemId] = updatedOption || currentItem;
-    });
-    setSelectedItems(updatedSelectedItems);
-  }, [linguisticTerms]);
-
-  const handleSetMaxMin = () => {
-    dispatch(setMaxMinConfiguration(selectedItems));
+  const handleSetOptimization = () => {
+    dispatch(setOptimizationConfiguration(selectedItems));
     handleSetupStep(true);
   };
 
@@ -68,7 +45,7 @@ export default function MaxMinConfiguration({ handleSetupStep }) {
     setSelectedItems(updatedSelectedItems);
   };
 
-  const maxMinData = [
+  const optimizationData = [
     { id: 1, function: "Max" },
     { id: 2, function: "Min" },
   ];
@@ -84,7 +61,7 @@ export default function MaxMinConfiguration({ handleSetupStep }) {
               value={selectedItems[itemId] || ""}
               onChange={(event) => handleSelectChange(event, itemId)}
             >
-              {maxMinData.map((option) => (
+              {optimizationData.map((option) => (
                 <MenuItem key={option.id} value={option.function}>
                   {option.function}
                 </MenuItem>
@@ -145,7 +122,7 @@ export default function MaxMinConfiguration({ handleSetupStep }) {
         <Button
           variant="contained"
           color="green"
-          onClick={handleSetMaxMin}
+          onClick={handleSetOptimization}
           endIcon={<IoArrowForward />}
         >
           Next

@@ -5,6 +5,10 @@ const showToastMessage = (message, typeMessage) => {
   let toastOptions = {
     position: toast.POSITION.BOTTOM_LEFT,
     autoClose: 3000,
+    style: {
+      background: "black",
+      color: "#f0f0f0",
+    },
   };
 
   switch (typeMessage) {

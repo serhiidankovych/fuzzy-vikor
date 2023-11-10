@@ -20,7 +20,6 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { setAlternativeConfiguration } from "../../../store/actions/alternativeConfigurationActions";
-import { setExpertsEstimationConfiguration } from "../../../store/actions/expertsEstimationConfigurationActions";
 
 import {
   generateContrastColor,
@@ -32,12 +31,12 @@ import {
 import { showToastMessage } from "../../../utils/toastUtils";
 
 export default function AlternativeConfiguration({ handleSetupStep }) {
+  const names = useSelector((state) => state.nameConfiguration);
+
   const generatedAlternativeLinguisticTerms = useSelector(
     (state) => state.alternativeConfiguration
   );
-  const expertsEstimation = useSelector(
-    (state) => state.expertsEstimationConfiguration
-  );
+
   const dispatch = useDispatch();
 
   const [alternative, setAlternative] = React.useState(
@@ -53,36 +52,9 @@ export default function AlternativeConfiguration({ handleSetupStep }) {
 
     if (isValid) {
       dispatch(setAlternativeConfiguration(alternative));
-      updateLinguisticTerms(expertsEstimation.expertsEstimation, alternative);
+
       handleSetupStep(true);
     }
-  };
-
-  const updateLinguisticTerms = (expertsEstimation, linguisticTerms) => {
-    const linguisticTermsTransformed = transformToTriangleForm(alternative);
-
-    const linguisticTermsMap = new Map(
-      linguisticTermsTransformed.map((term) => [term.id, term])
-    );
-
-    const updatedExpertsEstimations = Object.keys(expertsEstimation).reduce(
-      (result, estimation) => {
-        const currentEstimation = expertsEstimation[estimation];
-        const updatedOption = linguisticTermsMap.get(currentEstimation.data.id);
-
-        result[estimation] = {
-          data: updatedOption,
-          alternative: currentEstimation.alternative,
-          criteria: currentEstimation.criteria,
-          expertId: currentEstimation.expertId,
-        };
-
-        return result;
-      },
-      {}
-    );
-
-    dispatch(setExpertsEstimationConfiguration(updatedExpertsEstimations));
   };
 
   const renderInputs = (alternative, nameType) => {
@@ -97,7 +69,7 @@ export default function AlternativeConfiguration({ handleSetupStep }) {
         <TextField
           InputProps={{ inputProps: { min: "0", max: "1000", step: "0.5" } }}
           id={`${nameType}${index + 1}-left`}
-          label={`${linguisticTerm.linguisticTerm}`}
+          label={`${names.linguisticTermsForAlternativesNames[index]}`}
           key={`${nameType}-${index}-left`}
           variant="outlined"
           type="number"

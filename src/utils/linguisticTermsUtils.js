@@ -170,6 +170,7 @@ const checkLinguisticTermsConfines = (linguisticTerms, showToastMessage) => {
 
   return isValid;
 };
+
 export {
   transformToTriangleForm,
   normalizeValue,

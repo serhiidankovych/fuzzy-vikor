@@ -12,18 +12,12 @@ const checkNames = (names, showToastMessage) => {
   return isValid;
 };
 
-const generateLinguisticTerms = (
-  names,
-  type,
-  key,
-  generatedTriangularValues
-) => {
+const generateLinguisticTerms = (count, type, generatedTriangularValues) => {
   const generatedLinguisticTerms = [];
 
-  for (let i = 0; i < names[key]?.length; i++) {
+  for (let i = 0; i < count; i++) {
     generatedLinguisticTerms.push({
-      id: i,
-      linguisticTerm: names[key][i],
+      linguisticTermId: i,
       confines: generatedTriangularValues[i],
       type: type,
     });
@@ -32,68 +26,21 @@ const generateLinguisticTerms = (
   return generatedLinguisticTerms;
 };
 
-function updateCriteria(criteria, names) {
-  return criteria.criteriaLinguisticTerms.map((criterion, index) => {
-    return {
-      ...criterion,
-      linguisticTerm: names.linguisticTermsForCriteriaNames[index],
-    };
-  });
-}
+const generateNames = (prefix, count) => {
+  return Array.from({ length: count }, (_, index) => `${prefix}${index + 1}`);
+};
+const generateOptimization = (count) => {
+  const result = {};
+  for (let i = 1; i <= count; i++) {
+    result[`c${i}`] = "Max";
+  }
 
-function updateAlternatives(alternatives, names) {
-  return alternatives.alternativeLinguisticTerms.map((criterion, index) => {
-    return {
-      ...criterion,
-      linguisticTerm: names.linguisticTermsForAlternativesNames[index],
-    };
-  });
-}
+  return result;
+};
 
-function updateExpertsEstimations(expertsEstimation, names) {
-  return Object.keys(expertsEstimation.expertsEstimation).reduce(
-    (result, estimation) => {
-      const currentEstimation = expertsEstimation.expertsEstimation[estimation];
-      const updatedData = {
-        ...currentEstimation.data,
-        linguisticTerm:
-          names.linguisticTermsForAlternativesNames[currentEstimation.data.id],
-      };
-
-      result[estimation] = {
-        data: updatedData,
-        alternative: currentEstimation.alternative,
-        criteria: currentEstimation.criteria,
-        expertId: currentEstimation.expertId,
-      };
-
-      return result;
-    },
-    {}
-  );
-}
-
-function updateCriteriaEstimations(criteriaEstimation, names) {
-  const updatedCriteriaEstimations = {};
-
-  Object.keys(criteriaEstimation.criteriaEstimation).forEach((estimation) => {
-    const currentEstimation = criteriaEstimation.criteriaEstimation[estimation];
-    const updatedLinguisticTerm =
-      names.linguisticTermsForCriteriaNames[currentEstimation.id];
-
-    updatedCriteriaEstimations[estimation] = {
-      ...currentEstimation,
-      linguisticTerm: updatedLinguisticTerm,
-    };
-  });
-
-  return updatedCriteriaEstimations;
-}
 export {
   checkNames,
   generateLinguisticTerms,
-  updateCriteria,
-  updateAlternatives,
-  updateExpertsEstimations,
-  updateCriteriaEstimations,
+  generateOptimization,
+  generateNames,
 };

@@ -9,7 +9,7 @@ import NamesConfiguration from "./NamesConfiguration";
 import CriteriaConfiguration from "./CriteriaConfiguration";
 import AlternativeConfiguration from "./AlternativeConfiguration";
 import CriteriaEstimationConfiguration from "./CriteriaEstimationConfiguration";
-import MaxMinConfiguration from "./MaxMinConfiguration";
+import OptimizationConfiguration from "./OptimizationConfiguration";
 
 export default function Setup({
   isSetupOpen,
@@ -53,7 +53,7 @@ export default function Setup({
         />
       ),
       2: (
-        <MaxMinConfiguration
+        <OptimizationConfiguration
           handleSetupStep={handleSetupStep}
           isDatasetNotUsed={isDatasetNotUsed}
         />

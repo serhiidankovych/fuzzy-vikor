@@ -13,41 +13,19 @@ import { IoArrowForward, IoArrowBackOutline } from "react-icons/io5";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setNameConfiguration } from "../../../store/actions/nameConfigurationActions";
-import { setCriteriaConfiguration } from "../../../store/actions/criteriaConfigurationActions";
-import { setAlternativeConfiguration } from "../../../store/actions/alternativeConfigurationActions";
-import { setExpertsEstimationConfiguration } from "../../../store/actions/expertsEstimationConfigurationActions";
-import { setCriteriaEstimationConfiguration } from "../../../store/actions/criteriaEstimationConfigurationActions";
-
-import { generateTriangularValues } from "../../../utils/linguisticTermsUtils";
 import { showToastMessage } from "../../../utils/toastUtils";
-import {
-  checkNames,
-  generateLinguisticTerms,
-  updateCriteria,
-  updateAlternatives,
-  updateExpertsEstimations,
-  updateCriteriaEstimations,
-} from "../../../utils/namesUtils";
+import { checkNames } from "../../../utils/namesUtils";
 
 export default function NamesConfiguration({
   handleSetupStep,
   isDatasetNotUsed,
   setIsNamesSet,
-  isNamesSet,
 }) {
+  const dispatch = useDispatch();
+
   const generatedNames = useSelector((state) => state.nameConfiguration);
   const [tab, setTab] = React.useState("1");
   const [names, setNames] = React.useState(generatedNames || []);
-
-  const dispatch = useDispatch();
-  const criteria = useSelector((state) => state.criteriaConfiguration);
-  const alternatives = useSelector((state) => state.alternativeConfiguration);
-  const expertsEstimation = useSelector(
-    (state) => state.expertsEstimationConfiguration
-  );
-  const criteriaEstimation = useSelector(
-    (state) => state.criteriaEstimationConfiguration
-  );
 
   const handleTabChange = (event, newValue) => {
     setTab(newValue);
@@ -99,28 +77,6 @@ export default function NamesConfiguration({
         expertNames,
       } = names;
 
-      const generatedCriteriaTriangularValues = generateTriangularValues(
-        names?.linguisticTermsForCriteriaNames?.length,
-        1
-      );
-      const generatedAlternativesTriangularValues = generateTriangularValues(
-        names?.linguisticTermsForAlternativesNames?.length,
-        1
-      );
-
-      const generatedCriteriaLinguisticTerms = generateLinguisticTerms(
-        names,
-        "lt-criteria",
-        "linguisticTermsForCriteriaNames",
-        generatedCriteriaTriangularValues
-      );
-
-      const generatedAlternativeLinguisticTerms = generateLinguisticTerms(
-        names,
-        "lt-alternative",
-        "linguisticTermsForAlternativesNames",
-        generatedAlternativesTriangularValues
-      );
       setNames({
         alternativeNames,
         criteriaNames,
@@ -139,35 +95,9 @@ export default function NamesConfiguration({
       );
 
       if (isDatasetNotUsed) {
-        dispatch(
-          setCriteriaConfiguration([...generatedCriteriaLinguisticTerms])
-        );
-
-        dispatch(
-          setAlternativeConfiguration([...generatedAlternativeLinguisticTerms])
-        );
-
         setIsNamesSet(true);
       }
-      if (isNamesSet) {
-        const updatedCriteria = updateCriteria(criteria, names);
-        const updatedAlternatives = updateAlternatives(alternatives, names);
-        const updatedExpertsEstimations = updateExpertsEstimations(
-          expertsEstimation,
-          names
-        );
-        const updatedCriteriaEstimations = updateCriteriaEstimations(
-          criteriaEstimation,
-          names
-        );
 
-        dispatch(setCriteriaConfiguration(updatedCriteria));
-        dispatch(setAlternativeConfiguration(updatedAlternatives));
-        dispatch(setExpertsEstimationConfiguration(updatedExpertsEstimations));
-        dispatch(
-          setCriteriaEstimationConfiguration(updatedCriteriaEstimations)
-        );
-      }
       handleSetupStep(true);
     }
   };
@@ -232,7 +162,7 @@ export default function NamesConfiguration({
                     renderNameInputs(
                       names?.alternativeNames,
                       "alternativeNames",
-                      "a"
+                      "Alernative "
                     )}
                 </Box>
               </TabPanel>
@@ -248,7 +178,7 @@ export default function NamesConfiguration({
                     renderNameInputs(
                       names?.criteriaNames,
                       "criteriaNames",
-                      "c"
+                      "Criteria "
                     )}
                 </Box>
               </TabPanel>
@@ -264,7 +194,7 @@ export default function NamesConfiguration({
                     renderNameInputs(
                       names?.linguisticTermsForAlternativesNames,
                       "linguisticTermsForAlternativesNames",
-                      "aLT"
+                      "Alternative LT "
                     )}
                 </Box>
               </TabPanel>
@@ -280,7 +210,7 @@ export default function NamesConfiguration({
                     renderNameInputs(
                       names?.linguisticTermsForCriteriaNames,
                       "linguisticTermsForCriteriaNames",
-                      "cLT"
+                      "Criteria LT "
                     )}
                 </Box>
               </TabPanel>
@@ -293,7 +223,11 @@ export default function NamesConfiguration({
                   }}
                 >
                   {names?.expertNames?.length > 0 &&
-                    renderNameInputs(names.expertNames, "expertNames", "e")}
+                    renderNameInputs(
+                      names.expertNames,
+                      "expertNames",
+                      "Expert "
+                    )}
                 </Box>
               </TabPanel>
             </Box>

@@ -25,15 +25,18 @@ import {
   generateContrastColor,
   handleLinguisticTermsChange,
   transformToTriangleForm,
+  checkLinguisticTermsConfines,
 } from "../../../utils/linguisticTermsUtils";
 
+import { showToastMessage } from "../../../utils/toastUtils";
+
 export default function CriteriaConfiguration({ handleSetupStep }) {
+  const dispatch = useDispatch();
+  const names = useSelector((state) => state.nameConfiguration);
+
   const generatedCriteriaLinguisticTerms = useSelector(
     (state) => state.criteriaConfiguration
   );
-  const names = useSelector((state) => state.nameConfiguration);
-
-  const dispatch = useDispatch();
 
   const [criteria, setCriteria] = React.useState(
     generatedCriteriaLinguisticTerms.criteriaLinguisticTerms || []
@@ -44,8 +47,12 @@ export default function CriteriaConfiguration({ handleSetupStep }) {
   }, []);
 
   const handleSetCriteria = () => {
-    dispatch(setCriteriaConfiguration(criteria));
-    handleSetupStep(true);
+    const isValid = checkLinguisticTermsConfines(criteria, showToastMessage);
+    if (isValid) {
+      dispatch(setCriteriaConfiguration(criteria));
+
+      handleSetupStep(true);
+    }
   };
 
   const renderInputs = (criteria, nameType) => {
@@ -60,7 +67,7 @@ export default function CriteriaConfiguration({ handleSetupStep }) {
         <TextField
           InputProps={{ inputProps: { min: "0", max: "1000", step: "0.5" } }}
           id={`${nameType}${index + 1}-left`}
-          label={`${linguisticTerm.linguisticTerm}`}
+          label={names.linguisticTermsForCriteriaNames[index]}
           key={`${nameType}-${index}-left`}
           variant="outlined"
           type="number"
@@ -140,7 +147,7 @@ export default function CriteriaConfiguration({ handleSetupStep }) {
           gap: "8px",
         }}
       >
-        {renderInputs(criteria, "criteria", "lt")}
+        {renderInputs(criteria, "criteria")}
       </Box>
       <Typography>Linguistic terms:</Typography>
       <Box

@@ -8,7 +8,7 @@ import criteriaConfigurationReducer from "./reducers/criteriaConfigurationReduce
 import alternativeConfigurationReducer from "./reducers/alternativeConfigurationReducer";
 import criteriaEstimationConfigurationReducer from "./reducers/criteriaEstimationConfigurationReducer";
 import expertsEstimationConfigurationReducer from "./reducers/expertsEstimationConfigurationReducer";
-import maxMinConfigurationReducer from "./reducers/maxMinConfigurationReducer";
+import optimizationConfigurationReducer from "./reducers/optimizationConfigurationReducer";
 
 const rootReducer = combineReducers({
   numberConfiguration: numberConfigurationReducer,
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   alternativeConfiguration: alternativeConfigurationReducer,
   criteriaEstimationConfiguration: criteriaEstimationConfigurationReducer,
   expertsEstimationConfiguration: expertsEstimationConfigurationReducer,
-  maxMinConfiguration: maxMinConfigurationReducer,
+  optimizationConfiguration: optimizationConfigurationReducer,
 });
 
 const store = createStore(

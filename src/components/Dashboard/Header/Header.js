@@ -26,6 +26,7 @@ export default function Header({ handleDisplaySetup }) {
             fontWeight: "900",
             textAlign: "center",
             fontFamily: "Inconsolata",
+            marginLeft: "20px",
           }}
         >
           vikor

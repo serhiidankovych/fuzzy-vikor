@@ -13,84 +13,94 @@ import DatasetConfiguration from "./DatasetConfiguration";
 import { useDispatch, useSelector } from "react-redux";
 import { setNumberConfiguration } from "../../../store/actions/numberConfigurationActions";
 import { setNameConfiguration } from "../../../store/actions/nameConfigurationActions";
-import { setMaxMinConfiguration } from "../../../store/actions/maxMinConfigurationActions";
+import { setOptimizationConfiguration } from "../../../store/actions/optimizationConfigurationActions";
 import { setExpertsEstimationConfiguration } from "../../../store/actions/expertsEstimationConfigurationActions";
+import { setCriteriaConfiguration } from "../../../store/actions/criteriaConfigurationActions";
+import { setAlternativeConfiguration } from "../../../store/actions/alternativeConfigurationActions";
 
-import { generateExpertEstimations } from "../../../utils/expertEstimationsUtils";
+import {
+  generateExpertEstimations,
+  generateCriteriaEstimations,
+} from "../../../utils/expertEstimationsUtils";
+import { generateTriangularValues } from "../../../utils/linguisticTermsUtils";
+import {
+  generateOptimization,
+  generateNames,
+  generateLinguisticTerms,
+} from "../../../utils/namesUtils";
+import { setCriteriaEstimationConfiguration } from "../../../store/actions/criteriaEstimationConfigurationActions";
 
 export default function NumberConfiguration({
   handleSetupStep,
   setIsSetupFinised,
   setIsDatasetNotUsed,
   isDatasetNotUsed,
-  setIsNumbersSet,
-  setIsNamesSet,
 }) {
+  const dispatch = useDispatch();
   const initialNumbers = useSelector((state) => state.numberConfiguration);
-  const [numberOfAlternatives, setNumberOfAlternatives] = React.useState(
-    initialNumbers.numberOfAlternatives || 3
-  );
-  const [numberOfCriteria, setNumberOfCriteria] = React.useState(
-    initialNumbers.numberOfCriteria || 3
-  );
+
+  const [numberOfAlternatives, setNumberOfAlternatives] = React.useState(3);
+  const [numberOfCriteria, setNumberOfCriteria] = React.useState(3);
+  const [
+    numberOfLinguisticTermsForAlternatives,
+    setNumberOfLinguisticTermsForAlternatives,
+  ] = React.useState(3);
+  const [
+    numberOfLinguisticTermsForCriteria,
+    setNumberOfLinguisticTermsForCriteria,
+  ] = React.useState(3);
+  const [numberOfExperts, setNumberOfExperts] = React.useState(3);
 
   React.useEffect(() => {
-    setNumberOfCriteria(initialNumbers.numberOfCriteria || 3);
     setNumberOfAlternatives(initialNumbers.numberOfAlternatives || 3);
+    setNumberOfCriteria(initialNumbers.numberOfCriteria || 3);
     setNumberOfLinguisticTermsForAlternatives(
       initialNumbers.numberOfLinguisticTermsForAlternatives || 3
     );
     setNumberOfLinguisticTermsForCriteria(
       initialNumbers.numberOfLinguisticTermsForCriteria || 3
     );
-
     setNumberOfExperts(initialNumbers.numberOfExperts || 3);
   }, [initialNumbers]);
 
-  const [
-    numberOfLinguisticTermsForAlternatives,
-    setNumberOfLinguisticTermsForAlternatives,
-  ] = React.useState(
-    initialNumbers.numberOfLinguisticTermsForAlternatives || 3
-  );
-  const [
-    numberOfLinguisticTermsForCriteria,
-    setNumberOfLinguisticTermsForCriteria,
-  ] = React.useState(initialNumbers.numberOfLinguisticTermsForCriteria || 3);
-  const [numberOfExperts, setNumberOfExperts] = React.useState(
-    initialNumbers.numberOfExperts || 3
-  );
-
-  const dispatch = useDispatch();
-
-  const generateNames = (prefix, count) => {
-    return Array.from({ length: count }, (_, index) => `${prefix}${index + 1}`);
-  };
-  const generateMaxMin = (count) => {
-    const result = {};
-    for (let i = 1; i <= count; i++) {
-      result[`c${i}`] = "Max";
-    }
-
-    return result;
-  };
-
+  // Generate data
   const generatedAlternativeNames = generateNames(
     "Alternative",
     numberOfAlternatives
   );
   const generatedCriteriaNames = generateNames("Criteria", numberOfCriteria);
   const generatedLinguisticTermsForAlternativesNames = generateNames(
-    "aLT",
+    "A-LT",
     numberOfLinguisticTermsForAlternatives
   );
   const generatedLinguisticTermsForCriteriaNames = generateNames(
-    "cLT",
+    "C-LT",
     numberOfLinguisticTermsForCriteria
   );
 
   const generatedExpertsNames = generateNames("Expert", numberOfExperts);
-  const generatedMaxMin = generateMaxMin(numberOfCriteria);
+  const generatedOptimization = generateOptimization(numberOfCriteria);
+
+  const generatedCriteriaTriangularValues = generateTriangularValues(
+    numberOfLinguisticTermsForCriteria,
+    1
+  );
+  const generatedAlternativesTriangularValues = generateTriangularValues(
+    numberOfLinguisticTermsForAlternatives,
+    1
+  );
+
+  const generatedCriteriaLinguisticTerms = generateLinguisticTerms(
+    numberOfLinguisticTermsForCriteria,
+    "lt-criteria",
+    generatedCriteriaTriangularValues
+  );
+
+  const generatedAlternativeLinguisticTerms = generateLinguisticTerms(
+    numberOfLinguisticTermsForAlternatives,
+    "lt-alternative",
+    generatedAlternativesTriangularValues
+  );
 
   const handleSetNumbers = () => {
     if (isDatasetNotUsed) {
@@ -113,7 +123,19 @@ export default function NumberConfiguration({
         )
       );
 
-      dispatch(setMaxMinConfiguration(generatedMaxMin));
+      dispatch(setOptimizationConfiguration(generatedOptimization));
+
+      dispatch(setCriteriaConfiguration([...generatedCriteriaLinguisticTerms]));
+
+      dispatch(
+        setAlternativeConfiguration([...generatedAlternativeLinguisticTerms])
+      );
+
+      dispatch(
+        setCriteriaEstimationConfiguration(
+          generateCriteriaEstimations(numberOfExperts, numberOfCriteria)
+        )
+      );
 
       dispatch(
         setExpertsEstimationConfiguration(
@@ -125,8 +147,7 @@ export default function NumberConfiguration({
         )
       );
     }
-    //if numbers set
-    setIsNumbersSet(true);
+
     handleSetupStep(true);
   };
 
@@ -146,7 +167,6 @@ export default function NumberConfiguration({
         <DatasetConfiguration
           setIsSetupFinised={setIsSetupFinised}
           setIsDatasetNotUsed={setIsDatasetNotUsed}
-          setIsNamesSet={setIsNamesSet}
         />
         <Typography variant="h6">Provide input numbers</Typography>
         <Box
@@ -170,7 +190,7 @@ export default function NumberConfiguration({
             step={1}
             marks
             min={3}
-            max={10}
+            max={15}
             onChange={(e) => setNumberOfAlternatives(e.target.value)}
             color="green"
             disabled={!isDatasetNotUsed}
