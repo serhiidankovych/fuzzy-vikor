@@ -136,7 +136,6 @@ export default function NumberConfiguration({
           generateCriteriaEstimations(numberOfExperts, numberOfCriteria)
         )
       );
-
       dispatch(
         setExpertsEstimationConfiguration(
           generateExpertEstimations(

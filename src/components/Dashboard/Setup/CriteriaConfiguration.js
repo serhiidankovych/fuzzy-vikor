@@ -43,7 +43,7 @@ export default function CriteriaConfiguration({ handleSetupStep }) {
   );
 
   useEffect(() => {
-    setCriteria(transformToTriangleForm(criteria));
+    setCriteria((c) => transformToTriangleForm(c));
   }, []);
 
   const handleSetCriteria = () => {

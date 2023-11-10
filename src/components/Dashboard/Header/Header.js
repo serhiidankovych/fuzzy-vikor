@@ -7,12 +7,16 @@ import { IoMenu } from "react-icons/io5";
 
 export default function Header({ handleDisplaySetup }) {
   return (
-    <Box sx={{ margin: "10px" }}>
+    <Box sx={{ marginTop: "10px" }}>
       <AppBar
-        position="static"
+        position="fixed"
         sx={{
+          background:
+            " linear-gradient(135deg, rgba(31,31,31,0.8) 0%, rgba(18,18,18,0.8) 72%)",
           flexDirection: "row",
-          borderRadius: "15px",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(5px)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",

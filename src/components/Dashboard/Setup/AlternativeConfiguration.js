@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -44,7 +44,7 @@ export default function AlternativeConfiguration({ handleSetupStep }) {
   );
 
   useEffect(() => {
-    setAlternative(transformToTriangleForm(alternative));
+    setAlternative((a) => transformToTriangleForm(a));
   }, []);
 
   const handleSetAlternative = () => {

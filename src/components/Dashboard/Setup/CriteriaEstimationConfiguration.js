@@ -23,8 +23,8 @@ import { setCriteriaEstimationConfiguration } from "../../../store/actions/crite
 import { showToastMessage } from "../../../utils/toastUtils";
 export default function CriteriaEstimationConfiguration({
   handleSetupStep,
-  setIsSetupFinised,
   setIsSetupOpen,
+  setIsSetupFinised,
 }) {
   const dispatch = useDispatch();
   const names = useSelector((state) => state.nameConfiguration);
@@ -51,8 +51,8 @@ export default function CriteriaEstimationConfiguration({
     );
     if (isValid) {
       dispatch(setCriteriaEstimationConfiguration(selectedItems));
-      setIsSetupFinised(true);
       setIsSetupOpen(false);
+      setIsSetupFinised(true);
     }
   };
   const handlePageChange = (event, newPage) => {

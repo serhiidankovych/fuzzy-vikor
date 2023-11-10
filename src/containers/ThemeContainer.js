@@ -8,6 +8,8 @@ import {
   responsiveFontSizes,
 } from "@mui/material/styles";
 
+import Container from "@mui/material/Container";
+
 export default function ThemeContainer({ dashboard }) {
   const greenBase = "#00ed71";
   const greenMain = alpha(greenBase, 1);
@@ -76,7 +78,7 @@ export default function ThemeContainer({ dashboard }) {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div style={backgroundStyles}>{dashboard}</div>
+      <Container maxWidth="lg"> {dashboard}</Container>
     </ThemeProvider>
   );
 }

@@ -16,11 +16,7 @@ import { setNameConfiguration } from "../../../store/actions/nameConfigurationAc
 import { showToastMessage } from "../../../utils/toastUtils";
 import { checkNames } from "../../../utils/namesUtils";
 
-export default function NamesConfiguration({
-  handleSetupStep,
-  isDatasetNotUsed,
-  setIsNamesSet,
-}) {
+export default function NamesConfiguration({ handleSetupStep }) {
   const dispatch = useDispatch();
 
   const generatedNames = useSelector((state) => state.nameConfiguration);
@@ -93,10 +89,6 @@ export default function NamesConfiguration({
           expertNames
         )
       );
-
-      if (isDatasetNotUsed) {
-        setIsNamesSet(true);
-      }
 
       handleSetupStep(true);
     }

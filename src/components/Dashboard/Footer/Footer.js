@@ -13,7 +13,7 @@ export default function Footer() {
   return (
     <Box
       sx={{
-        padding: "20px",
+        padding: "20px 0 20px 0",
         marginBottom: "0",
         display: "flex",
         flexDirection: "row",

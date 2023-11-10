@@ -17,10 +17,6 @@ export default function Setup({
   setIsSetupFinised,
   setIsDatasetNotUsed,
   isDatasetNotUsed,
-  setIsNumbersSet,
-  isNumbersSet,
-  setIsNamesSet,
-  isNamesSet,
 }) {
   const [setupStep, setSetupStep] = React.useState(0);
 
@@ -40,42 +36,17 @@ export default function Setup({
           setIsSetupFinised={setIsSetupFinised}
           setIsDatasetNotUsed={setIsDatasetNotUsed}
           isDatasetNotUsed={isDatasetNotUsed}
-          setIsNumbersSet={setIsNumbersSet}
-          setIsNamesSet={setIsNamesSet}
         />
       ),
-      1: (
-        <NamesConfiguration
-          handleSetupStep={handleSetupStep}
-          isDatasetNotUsed={isDatasetNotUsed}
-          setIsNamesSet={setIsNamesSet}
-          isNamesSet={isNamesSet}
-        />
-      ),
-      2: (
-        <OptimizationConfiguration
-          handleSetupStep={handleSetupStep}
-          isDatasetNotUsed={isDatasetNotUsed}
-        />
-      ),
-      3: (
-        <AlternativeConfiguration
-          handleSetupStep={handleSetupStep}
-          isDatasetNotUsed={isDatasetNotUsed}
-        />
-      ),
-      4: (
-        <CriteriaConfiguration
-          handleSetupStep={handleSetupStep}
-          isDatasetNotUsed={isDatasetNotUsed}
-        />
-      ),
+      1: <NamesConfiguration handleSetupStep={handleSetupStep} />,
+      2: <OptimizationConfiguration handleSetupStep={handleSetupStep} />,
+      3: <AlternativeConfiguration handleSetupStep={handleSetupStep} />,
+      4: <CriteriaConfiguration handleSetupStep={handleSetupStep} />,
       5: (
         <CriteriaEstimationConfiguration
           handleSetupStep={handleSetupStep}
-          setIsSetupFinised={setIsSetupFinised}
-          isDatasetNotUsed={isDatasetNotUsed}
           setIsSetupOpen={setIsSetupOpen}
+          setIsSetupFinised={setIsSetupFinised}
         />
       ),
     };

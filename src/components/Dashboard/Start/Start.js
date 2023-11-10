@@ -5,10 +5,13 @@ import Typography from "@mui/material/Typography";
 
 import { Button } from "@mui/material";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import lendingImage from "../../../assets/lending.png";
 
 function Start({ handleDisplaySetup }) {
+  const matches = useMediaQuery("(max-width:1060px)");
+
   return (
     <>
       <Box>
@@ -16,11 +19,12 @@ function Start({ handleDisplaySetup }) {
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
             alignItems: "center",
             borderRadius: "15px",
-            height: "80vh",
+            height: "100vh",
             flexWrap: "wrap",
+            marginTop: matches ? "50px" : "0px",
           }}
         >
           <Box

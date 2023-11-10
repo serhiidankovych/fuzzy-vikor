@@ -27,10 +27,7 @@ import {
   optimization,
 } from "../../../templates/dataset1";
 
-export default function DatasetConfiguration({
-  setIsSetupFinised,
-  setIsDatasetNotUsed,
-}) {
+export default function DatasetConfiguration({ setIsDatasetNotUsed }) {
   const dispatch = useDispatch();
 
   const handleSetDataset = () => {
@@ -65,7 +62,6 @@ export default function DatasetConfiguration({
     dispatch(setCriteriaEstimationConfiguration(criteriaEstimations));
     dispatch(setExpertsEstimationConfiguration(expertsEstimations));
     dispatch(setOptimizationConfiguration(optimization));
-    setIsSetupFinised(true);
     setIsDatasetNotUsed(false);
   };
 
