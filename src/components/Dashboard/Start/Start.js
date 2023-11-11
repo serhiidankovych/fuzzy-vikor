@@ -36,7 +36,6 @@ function Start({ handleDisplaySetup }) {
               justifyContent: " center",
               textAlign: "justify",
               gap: "7px",
-              padding: "20px",
             }}
           >
             <Typography

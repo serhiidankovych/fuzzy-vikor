@@ -170,7 +170,7 @@ export default function CriteriaEstimationConfiguration({
           onClick={handleSetCriteriaEstimations}
           endIcon={<IoArrowForward />}
         >
-          Next
+          Finish
         </Button>
       </Box>
     </Box>

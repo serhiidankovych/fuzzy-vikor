@@ -3,6 +3,7 @@ import Start from "./Start/Start";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import Setup from "./Setup/Setup";
+import FuzzyVIKOR from "./FuzzyVIKOR/FuzzyVIKOR";
 
 import { ToastContainer, toast } from "react-toastify";
 import ExpertsEstimations from "./ExpertsEstimations/ExpertsEstimations";
@@ -20,8 +21,12 @@ export default function Dashboard() {
     <>
       <Header handleDisplaySetup={handleDisplaySetup} />
       <Start handleDisplaySetup={handleDisplaySetup} />
-      {isSetupFinised && <ExpertsEstimations />}
-
+      {isSetupFinised && (
+        <>
+          <ExpertsEstimations /> //temp
+        </>
+      )}
+      <FuzzyVIKOR />
       <Setup
         isDatasetNotUsed={isDatasetNotUsed}
         setIsDatasetNotUsed={setIsDatasetNotUsed}

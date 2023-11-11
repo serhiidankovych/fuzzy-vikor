@@ -12,3 +12,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* Customize the scrollbar */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the entire scrollbar */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker background on hover */
+}
+
+/* Handle on drag */
+::-webkit-scrollbar-thumb:active {
+  background: #333; /* Darker background when dragging */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #222; /* Track color */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #444; /* Handle color */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:active {
+  background: #333; /* Darker background when dragging */
+}

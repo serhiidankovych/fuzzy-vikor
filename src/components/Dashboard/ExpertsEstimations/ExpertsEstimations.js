@@ -76,7 +76,7 @@ export default function ExpertsEstimations({}) {
           const itemId = `e${Number(expertName) + 1}-a${
             alternativeIndex + 1
           }-c${criteriaIndex + 1}`;
-          console.log(selectedItems[itemId]);
+
           return (
             <TableCell key={criteriaIndex} align="center">
               <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
