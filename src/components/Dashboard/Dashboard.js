@@ -24,9 +24,10 @@ export default function Dashboard() {
       {isSetupFinised && (
         <>
           <ExpertsEstimations /> //temp
+          <FuzzyVIKOR />
         </>
       )}
-      <FuzzyVIKOR />
+
       <Setup
         isDatasetNotUsed={isDatasetNotUsed}
         setIsDatasetNotUsed={setIsDatasetNotUsed}

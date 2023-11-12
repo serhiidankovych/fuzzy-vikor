@@ -54,8 +54,8 @@ export default function OptimizationConfiguration({ handleSetupStep }) {
     const itemId = `c${criteriaIndex + 1}`;
     return (
       <TableRow key={`${criteriaIndex}`}>
-        <TableCell>{criteriaName}</TableCell>
-        <TableCell>
+        <TableCell align="center">{criteriaName}</TableCell>
+        <TableCell align="center">
           <FormControl sx={{ m: 1, minWidth: 50 }} size="small">
             <Select
               value={selectedItems[itemId] || ""}

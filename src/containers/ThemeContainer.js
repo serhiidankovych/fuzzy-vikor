@@ -45,6 +45,14 @@ export default function ThemeContainer({ dashboard }) {
         },
       },
 
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            padding: "1px",
+          },
+        },
+      },
+
       MuiTabPanel: {
         styleOverrides: { root: { padding: 0 } },
       },
