@@ -88,22 +88,61 @@ const getBestWorstCriteria = (fuzzySyntheticMeasure, optimization) => {
     const maxMiddleElement = Math.max(...middleElements);
     const maxLastElement = Math.max(...rightElements);
 
-    let best;
-    let worst;
-    if (optimization[key] === "Max") {
-      best = [maxFirstElement, maxMiddleElement, maxLastElement];
-      worst = [minFirstElement, minMiddleElement, minLastElement];
-    } else {
-      best = [minFirstElement, minMiddleElement, minLastElement];
-      worst = [maxFirstElement, maxMiddleElement, maxLastElement];
-    }
-
-    bestWorstCriteria[key] = {
-      best,
-      worst,
-    };
+    const [best, worst] =
+      optimization[key] === "Max"
+        ? [
+            [maxFirstElement, maxMiddleElement, maxLastElement],
+            [minFirstElement, minMiddleElement, minLastElement],
+          ]
+        : [
+            [minFirstElement, minMiddleElement, minLastElement],
+            [maxFirstElement, maxMiddleElement, maxLastElement],
+          ];
+    bestWorstCriteria[key] = { best, worst };
   }
   return bestWorstCriteria;
 };
 
-export { groupEstimations, getFuzzySyntheticMeasure, getBestWorstCriteria };
+const getNormalizedFuzzyDifference = (
+  bestWorstCriteria,
+  fuzzyAlternativesSyntheticMeasure,
+  optimization
+) => {
+  const normalizedFuzzyDifference = {};
+
+  for (const [key, fuzzyAlternativeSyntheticMeasure] of Object.entries(
+    fuzzyAlternativesSyntheticMeasure
+  )) {
+    const [, criteriaKey] = key.split("-");
+    const bestWorstCriterion = bestWorstCriteria[criteriaKey];
+
+    const fuzzyDifference =
+      optimization[key] === "Max"
+        ? bestWorstCriterion.best.map(
+            (value, index) => value - fuzzyAlternativeSyntheticMeasure[index]
+          )
+        : bestWorstCriterion.worst.map(
+            (value, index) => fuzzyAlternativeSyntheticMeasure[index] - value
+          );
+
+    const bestWorstDifference =
+      optimization[key] === "Max"
+        ? bestWorstCriterion.best[2] - bestWorstCriterion.worst[0]
+        : bestWorstCriterion.worst[2] - bestWorstCriterion.best[0];
+
+    let normalized = fuzzyDifference.map(
+      (value) => value / bestWorstDifference
+    );
+
+    normalizedFuzzyDifference[key] = normalized;
+  }
+
+  return normalizedFuzzyDifference;
+};
+
+export {
+  groupEstimations,
+  getFuzzySyntheticMeasure,
+  getBestWorstCriteria,
+  getNormalizedFuzzyDifference,
+};

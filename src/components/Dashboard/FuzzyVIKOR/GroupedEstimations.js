@@ -11,6 +11,7 @@ import {
   Typography,
   Paper,
   Button,
+  TablePagination,
 } from "@mui/material";
 
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
@@ -26,6 +27,15 @@ export default function GroupedEstimations({
     React.useState(false);
   const [isCriteriaDetailsShown, setIsCriteriaDetailsShown] =
     React.useState(false);
+  const rowsPerPage = 1;
+  const [alternativePage, setAlternativePage] = React.useState(0);
+  const [criteriaPage, setCriteriaPage] = React.useState(0);
+  const handleChangeAlternativePage = (event, newPage) => {
+    setAlternativePage(newPage);
+  };
+  const handleChangeCriteriaPage = (event, newPage) => {
+    setCriteriaPage(newPage);
+  };
   const GroupedAlternativesEstimations = names.alternativeNames?.map(
     (alternativeName, alternativeIndex) => {
       const criterionCells = names.criteriaNames?.map(
@@ -269,8 +279,22 @@ export default function GroupedEstimations({
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>{GroupedAlternativesEstimations}</TableBody>
+
+            <TableBody>
+              {GroupedAlternativesEstimations.slice(
+                alternativePage * rowsPerPage,
+                alternativePage * rowsPerPage + rowsPerPage
+              ).map((row) => row)}
+            </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[]}
+            component="div"
+            count={GroupedAlternativesEstimations.length}
+            rowsPerPage={rowsPerPage}
+            page={alternativePage}
+            onPageChange={handleChangeAlternativePage}
+          />
         </TableContainer>
 
         {isAlternativesDetailsShown && (
@@ -331,8 +355,22 @@ export default function GroupedEstimations({
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>{GroupedCriteriaEstimations}</TableBody>
+            {/* <TableBody>{GroupedCriteriaEstimations}</TableBody> */}
+            <TableBody>
+              {GroupedCriteriaEstimations.slice(
+                criteriaPage * rowsPerPage,
+                criteriaPage * rowsPerPage + rowsPerPage
+              ).map((row) => row)}
+            </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[]}
+            component="div"
+            count={GroupedCriteriaEstimations.length}
+            rowsPerPage={rowsPerPage}
+            page={criteriaPage}
+            onPageChange={handleChangeCriteriaPage}
+          />
         </TableContainer>
 
         {isCriteriaDetailsShown && (
