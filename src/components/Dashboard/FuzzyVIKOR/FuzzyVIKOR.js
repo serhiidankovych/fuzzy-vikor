@@ -2,11 +2,13 @@ import React from "react";
 
 import GroupedEstimations from "./GroupedEstimations";
 import SyntheticMeasure from "./SyntheticMeasure";
+import BestWorstCriteria from "./BestWorstCriteria";
 
 import { useSelector } from "react-redux";
 import {
   groupEstimations,
   getFuzzySyntheticMeasure,
+  getBestWorstCriteria,
 } from "../../../utils/FuzzyVIKORUtils";
 
 export default function FuzzyVIKOR() {
@@ -26,6 +28,7 @@ export default function FuzzyVIKOR() {
   const alternativesLinguisticTerms = useSelector(
     (state) => state.alternativeConfiguration
   );
+  const optimization = useSelector((state) => state.optimizationConfiguration);
 
   const groupedAlternativesEstimations = groupEstimations(
     expertsEstimations.expertsEstimation,
@@ -47,6 +50,11 @@ export default function FuzzyVIKOR() {
     alternativesLinguisticTerms.alternativeLinguisticTerms
   );
 
+  const bestWorstCriteria = getBestWorstCriteria(
+    fuzzyAlternativesSyntheticMeasure,
+    optimization.optimization
+  );
+
   return (
     <>
       <GroupedEstimations
@@ -60,6 +68,12 @@ export default function FuzzyVIKOR() {
         fuzzyCriteriaSyntheticMeasure={fuzzyCriteriaSyntheticMeasure}
         fuzzyAlternativesSyntheticMeasure={fuzzyAlternativesSyntheticMeasure}
         names={names}
+      />
+
+      <BestWorstCriteria
+        names={names}
+        bestWorstCriteria={bestWorstCriteria}
+        optimization={optimization.optimization}
       />
     </>
   );

@@ -48,7 +48,8 @@ export default function ThemeContainer({ dashboard }) {
       MuiTableCell: {
         styleOverrides: {
           root: {
-            padding: "1px",
+            padding: "3px",
+            whiteSpace: "nowrap",
           },
         },
       },

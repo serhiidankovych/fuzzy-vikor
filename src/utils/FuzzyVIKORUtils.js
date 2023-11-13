@@ -47,9 +47,6 @@ const getFuzzySyntheticMeasure = (groupedEstimations, linguisticTerms) => {
     const sumMiddleElements = middleElements.reduce((a, c) => a + c, 0);
     const avgMiddleElement = sumMiddleElements / middleElements.length;
 
-    console.log(`Minimum of first elements: ${minFirstElement}`);
-    console.log(`Average of middle elements: ${avgMiddleElement}`);
-    console.log(`Maximum of last elements: ${maxLastElement}`);
     fuzzySyntheticMeasure[key] = [
       minFirstElement,
       avgMiddleElement,
@@ -60,4 +57,53 @@ const getFuzzySyntheticMeasure = (groupedEstimations, linguisticTerms) => {
   return fuzzySyntheticMeasure;
 };
 
-export { groupEstimations, getFuzzySyntheticMeasure };
+const groupCriteria = (fuzzySyntheticMeasure) => {
+  const groupCriteria = {};
+  for (const key in fuzzySyntheticMeasure) {
+    const item = fuzzySyntheticMeasure[key];
+    const [, aggregationKey] = key.split("-");
+    if (!groupCriteria[aggregationKey]) {
+      groupCriteria[aggregationKey] = [];
+    }
+    groupCriteria[aggregationKey].push(item);
+  }
+  return groupCriteria;
+};
+const getBestWorstCriteria = (fuzzySyntheticMeasure, optimization) => {
+  const bestWorstCriteria = {};
+  console.log(fuzzySyntheticMeasure);
+  const groupedfuzzySyntheticMeasure = groupCriteria(fuzzySyntheticMeasure);
+  for (const key in groupedfuzzySyntheticMeasure) {
+    const item = groupedfuzzySyntheticMeasure[key];
+
+    const leftElements = item.map((subarray) => subarray[0]);
+    const middleElements = item.map((subarray) => subarray[1]);
+    const rightElements = item.map((subarray) => subarray[2]);
+
+    const minFirstElement = Math.min(...leftElements);
+    const minMiddleElement = Math.min(...middleElements);
+    const minLastElement = Math.min(...rightElements);
+
+    const maxFirstElement = Math.max(...leftElements);
+    const maxMiddleElement = Math.max(...middleElements);
+    const maxLastElement = Math.max(...rightElements);
+
+    let best;
+    let worst;
+    if (optimization[key] === "Max") {
+      best = [maxFirstElement, maxMiddleElement, maxLastElement];
+      worst = [minFirstElement, minMiddleElement, minLastElement];
+    } else {
+      best = [minFirstElement, minMiddleElement, minLastElement];
+      worst = [maxFirstElement, maxMiddleElement, maxLastElement];
+    }
+
+    bestWorstCriteria[key] = {
+      best,
+      worst,
+    };
+  }
+  return bestWorstCriteria;
+};
+
+export { groupEstimations, getFuzzySyntheticMeasure, getBestWorstCriteria };
