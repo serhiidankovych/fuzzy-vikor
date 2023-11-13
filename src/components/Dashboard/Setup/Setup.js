@@ -17,6 +17,9 @@ export default function Setup({
   setIsSetupFinised,
   setIsDatasetNotUsed,
   isDatasetNotUsed,
+  scrollToComponent,
+  expertEstimationsRef,
+  setIsExpertsEstimationsOpen,
 }) {
   const [setupStep, setSetupStep] = React.useState(0);
 
@@ -34,6 +37,7 @@ export default function Setup({
         <NumbersConfiguration
           handleSetupStep={handleSetupStep}
           setIsSetupFinised={setIsSetupFinised}
+          setIsExpertsEstimationsOpen={setIsExpertsEstimationsOpen}
           setIsDatasetNotUsed={setIsDatasetNotUsed}
           isDatasetNotUsed={isDatasetNotUsed}
         />
@@ -47,6 +51,8 @@ export default function Setup({
           handleSetupStep={handleSetupStep}
           setIsSetupOpen={setIsSetupOpen}
           setIsSetupFinised={setIsSetupFinised}
+          scrollToComponent={scrollToComponent}
+          expertEstimationsRef={expertEstimationsRef}
         />
       ),
     };

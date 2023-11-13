@@ -25,6 +25,8 @@ export default function CriteriaEstimationConfiguration({
   handleSetupStep,
   setIsSetupOpen,
   setIsSetupFinised,
+  scrollToComponent,
+  expertEstimationsRef,
 }) {
   const dispatch = useDispatch();
   const names = useSelector((state) => state.nameConfiguration);
@@ -53,6 +55,7 @@ export default function CriteriaEstimationConfiguration({
       dispatch(setCriteriaEstimationConfiguration(selectedItems));
       setIsSetupOpen(false);
       setIsSetupFinised(true);
+      scrollToComponent(expertEstimationsRef);
     }
   };
   const handlePageChange = (event, newPage) => {

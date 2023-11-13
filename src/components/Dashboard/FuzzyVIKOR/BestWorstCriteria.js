@@ -22,7 +22,7 @@ export default function BestWorstCriteria({
   const BestWorstCriteriaValues = names.criteriaNames?.map(
     (criteriaName, criteriaIndex) => {
       const itemId = `c${criteriaIndex + 1}`;
-      console.log(bestWorstCriteria);
+
       const criterionCells = (
         <TableRow key={criteriaIndex}>
           <TableCell align="center">{criteriaName}</TableCell>

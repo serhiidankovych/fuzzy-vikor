@@ -20,7 +20,7 @@ import { IoSparklesOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { setExpertsEstimationConfiguration } from "../../../store/actions/expertsEstimationConfigurationActions";
 
-export default function ExpertsEstimations({}) {
+const ExpertsEstimations = React.forwardRef((props, ref) => {
   const alternativesLinguisticTerms = useSelector(
     (state) => state.alternativeConfiguration
   );
@@ -60,6 +60,7 @@ export default function ExpertsEstimations({}) {
 
   const handleSetExpertEstimations = () => {
     dispatch(setExpertsEstimationConfiguration(selectedItems));
+    props.setIsExpertsEstimationsSet(true);
   };
 
   const handleSelectChange = (event, id) => {
@@ -109,6 +110,7 @@ export default function ExpertsEstimations({}) {
 
   return (
     <Box
+      ref={ref}
       component={Paper}
       sx={{
         p: 1.5,
@@ -170,6 +172,7 @@ export default function ExpertsEstimations({}) {
           variant="contained"
           color="green"
           endIcon={<IoSparklesOutline />}
+          disabled={!props.isSetupFinised}
         >
           Use Fuzzy Vikor magic
         </Button>
@@ -184,4 +187,5 @@ export default function ExpertsEstimations({}) {
       </Box>
     </Box>
   );
-}
+});
+export default ExpertsEstimations;

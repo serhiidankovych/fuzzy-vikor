@@ -15,8 +15,6 @@ import {
 
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
-import { useSelector } from "react-redux";
-
 export default function GroupedEstimations({
   groupedAlternativesEstimations,
   groupedCriteriaEstimations,

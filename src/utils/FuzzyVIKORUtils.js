@@ -28,13 +28,13 @@ const getFuzzySyntheticMeasure = (groupedEstimations, linguisticTerms) => {
     const { linguisticTermsId } = item;
 
     const normalizedConfines = [];
-    console.log(linguisticTermsId);
+
     linguisticTermsId.forEach((linguisticTermId) => {
       normalizedConfines.push(
         linguisticTerms[linguisticTermId.linguisticTermId].normalizedConfines
       );
     });
-    console.log(normalizedConfines);
+
     // Extract first and last elements from each subarray
     const leftElements = normalizedConfines.map((subarray) => subarray[0]);
     const middleElements = normalizedConfines.map((subarray) => subarray[1]);
@@ -53,7 +53,7 @@ const getFuzzySyntheticMeasure = (groupedEstimations, linguisticTerms) => {
       maxLastElement,
     ];
   }
-  console.log(fuzzySyntheticMeasure);
+
   return fuzzySyntheticMeasure;
 };
 
@@ -71,7 +71,7 @@ const groupCriteria = (fuzzySyntheticMeasure) => {
 };
 const getBestWorstCriteria = (fuzzySyntheticMeasure, optimization) => {
   const bestWorstCriteria = {};
-  console.log(fuzzySyntheticMeasure);
+
   const groupedfuzzySyntheticMeasure = groupCriteria(fuzzySyntheticMeasure);
   for (const key in groupedfuzzySyntheticMeasure) {
     const item = groupedfuzzySyntheticMeasure[key];

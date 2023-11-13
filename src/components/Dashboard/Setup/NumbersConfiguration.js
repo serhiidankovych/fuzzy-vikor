@@ -35,6 +35,7 @@ export default function NumberConfiguration({
   setIsSetupFinised,
   setIsDatasetNotUsed,
   isDatasetNotUsed,
+  setIsExpertsEstimationsOpen,
 }) {
   const dispatch = useDispatch();
   const initialNumbers = useSelector((state) => state.numberConfiguration);
@@ -148,6 +149,7 @@ export default function NumberConfiguration({
     }
 
     handleSetupStep(true);
+    setIsExpertsEstimationsOpen(true);
   };
 
   return (
@@ -163,10 +165,7 @@ export default function NumberConfiguration({
           gap: "8px",
         }}
       >
-        <DatasetConfiguration
-          setIsSetupFinised={setIsSetupFinised}
-          setIsDatasetNotUsed={setIsDatasetNotUsed}
-        />
+        <DatasetConfiguration setIsDatasetNotUsed={setIsDatasetNotUsed} />
         <Typography variant="h6">Provide input numbers</Typography>
         <Box
           component="span"
