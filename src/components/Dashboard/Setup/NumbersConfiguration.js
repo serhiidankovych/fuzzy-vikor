@@ -52,6 +52,8 @@ export default function NumberConfiguration({
   ] = React.useState(3);
   const [numberOfExperts, setNumberOfExperts] = React.useState(3);
 
+  const [weightParameter, setWeightParameter] = React.useState(0.6);
+
   React.useEffect(() => {
     setNumberOfAlternatives(initialNumbers.numberOfAlternatives || 3);
     setNumberOfCriteria(initialNumbers.numberOfCriteria || 3);
@@ -62,6 +64,7 @@ export default function NumberConfiguration({
       initialNumbers.numberOfLinguisticTermsForCriteria || 3
     );
     setNumberOfExperts(initialNumbers.numberOfExperts || 3);
+    setWeightParameter(initialNumbers.weightParameter || 0.6);
   }, [initialNumbers]);
 
   // Generate data
@@ -111,7 +114,8 @@ export default function NumberConfiguration({
           numberOfCriteria,
           numberOfLinguisticTermsForAlternatives,
           numberOfLinguisticTermsForCriteria,
-          numberOfExperts
+          numberOfExperts,
+          weightParameter
         )
       );
       dispatch(
@@ -170,12 +174,11 @@ export default function NumberConfiguration({
         <Box
           component="span"
           sx={{
-            p: 1.5,
+            p: "8px",
             border: "1px solid #51454f",
             borderRadius: "8px",
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
           }}
         >
           <Typography id="alternatives-slider" gutterBottom>
@@ -197,12 +200,11 @@ export default function NumberConfiguration({
         <Box
           component="span"
           sx={{
-            p: 1.5,
+            p: "8px",
             border: "1px solid #51454f",
             borderRadius: "8px",
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
           }}
         >
           <Typography id="criteria-slider" gutterBottom>
@@ -224,12 +226,11 @@ export default function NumberConfiguration({
         <Box
           component="span"
           sx={{
-            p: 1.5,
+            p: "8px",
             border: "1px solid #51454f",
             borderRadius: "8px",
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
           }}
         >
           <Typography id="linguistic-terms-slider" gutterBottom>
@@ -253,12 +254,11 @@ export default function NumberConfiguration({
         <Box
           component="span"
           sx={{
-            p: 1.5,
+            p: "8px",
             border: "1px solid #51454f",
             borderRadius: "8px",
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
           }}
         >
           <Typography id="linguistic-terms-slider" gutterBottom>
@@ -282,12 +282,11 @@ export default function NumberConfiguration({
         <Box
           component="span"
           sx={{
-            p: 1.5,
+            p: "8px",
             border: "1px solid #51454f",
             borderRadius: "8px",
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
           }}
         >
           <Typography id="experts-slider" gutterBottom>
@@ -302,6 +301,32 @@ export default function NumberConfiguration({
             min={1}
             max={5}
             onChange={(e) => setNumberOfExperts(e.target.value)}
+            color="green"
+            disabled={!isDatasetNotUsed}
+          />
+        </Box>
+        <Box
+          component="span"
+          sx={{
+            p: "8px",
+            border: "1px solid #51454f",
+            borderRadius: "8px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography id="experts-slider" gutterBottom>
+            Weight degree(υ)
+          </Typography>
+          <Slider
+            aria-labelledby="experts-slider"
+            value={weightParameter}
+            valueLabelDisplay="auto"
+            step={0.1}
+            marks
+            min={0}
+            max={1}
+            onChange={(e) => setWeightParameter(e.target.value)}
             color="green"
             disabled={!isDatasetNotUsed}
           />

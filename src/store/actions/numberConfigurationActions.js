@@ -4,7 +4,8 @@ export const setNumberConfiguration = (
   numberOfCriteria,
   numberOfLinguisticTermsForAlternatives,
   numberOfLinguisticTermsForCriteria,
-  numberOfExperts
+  numberOfExperts,
+  weightParameter
 ) => {
   return {
     type: "SET_NUMBER",
@@ -14,6 +15,7 @@ export const setNumberConfiguration = (
       numberOfLinguisticTermsForAlternatives,
       numberOfLinguisticTermsForCriteria,
       numberOfExperts,
+      weightParameter,
     },
   };
 };

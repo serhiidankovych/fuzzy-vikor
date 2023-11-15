@@ -109,7 +109,6 @@ const getNormalizedFuzzyDifference = (
   optimization
 ) => {
   const normalizedFuzzyDifference = {};
-
   for (const [key, fuzzyAlternativeSyntheticMeasure] of Object.entries(
     fuzzyAlternativesSyntheticMeasure
   )) {
@@ -140,9 +139,36 @@ const getNormalizedFuzzyDifference = (
   return normalizedFuzzyDifference;
 };
 
+const normalizedFuzzyDifference2 = (
+  fuzzySyntheticMeasure,
+  bestWorstValues,
+  optimization
+) => {
+  const result = {};
+
+  Object.keys(fuzzySyntheticMeasure).forEach((key) => {
+    const criterion = key.split("-")[1];
+    const isBenefit = optimization[criterion] === "Max";
+
+    const fStar = isBenefit
+      ? bestWorstValues[criterion].best
+      : bestWorstValues[criterion].worst;
+    const fij = fuzzySyntheticMeasure[key];
+
+    const numerator = isBenefit ? fStar[1] - fij[1] : fij[1] - fStar[1];
+    const denominator = isBenefit ? fStar[2] - fStar[0] : fStar[0] - fStar[2];
+
+    const dij = numerator / denominator;
+    result[key] = dij;
+  });
+  console.log(result);
+  return result;
+};
+
 export {
   groupEstimations,
   getFuzzySyntheticMeasure,
   getBestWorstCriteria,
   getNormalizedFuzzyDifference,
+  normalizedFuzzyDifference2,
 };

@@ -6,6 +6,7 @@ const initialState = {
   numberOfLinguisticTermsForAlternatives: 5,
   numberOfLinguisticTermsForCriteria: 5,
   numberOfExperts: 3,
+  weightParameter: 0.5,
 };
 
 const numberConfigurationReducer = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const numberConfigurationReducer = (state = initialState, action) => {
         numberOfLinguisticTermsForCriteria:
           action.payload.numberOfLinguisticTermsForCriteria,
         numberOfExperts: action.payload.numberOfExperts,
+        weightParameter: action.payload.weightParameter,
       };
     default:
       return state;

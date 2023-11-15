@@ -12,32 +12,22 @@ import { setAlternativeConfiguration } from "../../../store/actions/alternativeC
 import { setCriteriaEstimationConfiguration } from "../../../store/actions/criteriaEstimationConfigurationActions";
 import { setExpertsEstimationConfiguration } from "../../../store/actions/expertsEstimationConfigurationActions";
 import { setOptimizationConfiguration } from "../../../store/actions/optimizationConfigurationActions";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  numberOfAlternatives,
-  numberOfCriteria,
-  numberOfLinguisticTermsForAlternatives,
-  numberOfLinguisticTermsForCriteria,
-  numberOfExperts,
-  names,
-  criteriaLinguisticTerms,
-  alternativesLinguisticTerms,
-  criteriaEstimations,
-  expertsEstimations,
-  optimization,
-} from "../../../templates/dataset1";
+import { useDispatch } from "react-redux";
+import { dataset1 } from "../../../templates/dataset1";
+import { dataset2 } from "../../../templates/dataset2";
 
 export default function DatasetConfiguration({ setIsDatasetNotUsed }) {
   const dispatch = useDispatch();
 
-  const handleSetDataset = () => {
+  const handleSetDataset = (dataset) => {
     dispatch(
       setNumberConfiguration(
-        numberOfAlternatives,
-        numberOfCriteria,
-        numberOfLinguisticTermsForAlternatives,
-        numberOfLinguisticTermsForCriteria,
-        numberOfExperts
+        dataset.numberOfAlternatives,
+        dataset.numberOfCriteria,
+        dataset.numberOfLinguisticTermsForAlternatives,
+        dataset.numberOfLinguisticTermsForCriteria,
+        dataset.numberOfExperts,
+        dataset.weightParameter
       )
     );
     const {
@@ -46,7 +36,7 @@ export default function DatasetConfiguration({ setIsDatasetNotUsed }) {
       linguisticTermsForAlternativesNames,
       linguisticTermsForCriteriaNames,
       expertNames,
-    } = names;
+    } = dataset.names;
 
     dispatch(
       setNameConfiguration(
@@ -57,11 +47,11 @@ export default function DatasetConfiguration({ setIsDatasetNotUsed }) {
         expertNames
       )
     );
-    dispatch(setCriteriaConfiguration(criteriaLinguisticTerms));
-    dispatch(setAlternativeConfiguration(alternativesLinguisticTerms));
-    dispatch(setCriteriaEstimationConfiguration(criteriaEstimations));
-    dispatch(setExpertsEstimationConfiguration(expertsEstimations));
-    dispatch(setOptimizationConfiguration(optimization));
+    dispatch(setCriteriaConfiguration(dataset.criteriaLinguisticTerms));
+    dispatch(setAlternativeConfiguration(dataset.alternativesLinguisticTerms));
+    dispatch(setCriteriaEstimationConfiguration(dataset.criteriaEstimations));
+    dispatch(setExpertsEstimationConfiguration(dataset.expertsEstimations));
+    dispatch(setOptimizationConfiguration(dataset.optimization));
     setIsDatasetNotUsed(false);
   };
 
@@ -82,11 +72,15 @@ export default function DatasetConfiguration({ setIsDatasetNotUsed }) {
         <Button
           variant="contained"
           color="green"
-          onClick={() => handleSetDataset()}
+          onClick={() => handleSetDataset(dataset1)}
         >
           Dataset #1
         </Button>
-        <Button variant="contained" disabled={true} color="green">
+        <Button
+          variant="contained"
+          color="green"
+          onClick={() => handleSetDataset(dataset2)}
+        >
           Dataset #2
         </Button>
       </Stack>

@@ -11,6 +11,7 @@ import {
   getFuzzySyntheticMeasure,
   getBestWorstCriteria,
   getNormalizedFuzzyDifference,
+  normalizedFuzzyDifference2,
 } from "../../../utils/FuzzyVIKORUtils";
 
 export default function FuzzyVIKOR() {
@@ -62,6 +63,13 @@ export default function FuzzyVIKOR() {
     fuzzyAlternativesSyntheticMeasure,
     optimization.optimization
   );
+  const hello = normalizedFuzzyDifference2(
+    fuzzyAlternativesSyntheticMeasure,
+    bestWorstCriteria,
+    optimization.optimization
+  );
+
+  console.log(hello);
 
   return (
     <>
@@ -86,6 +94,7 @@ export default function FuzzyVIKOR() {
       <NormalizedDifference
         names={names}
         normalizedFuzzyDifference={normalizedFuzzyDifference}
+        optimization={optimization.optimization}
       />
     </>
   );

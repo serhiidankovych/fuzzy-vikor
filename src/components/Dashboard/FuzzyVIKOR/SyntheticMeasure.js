@@ -141,7 +141,7 @@ export default function SyntheticMeasure({
           marginTop: "20px",
         }}
       >
-        <Typography variant="h5">Fuzzy criteria synthetic measure</Typography>
+        <Typography variant="h5">Criteria weight importance</Typography>
 
         <TableContainer component={Paper}>
           <Table>
@@ -149,7 +149,7 @@ export default function SyntheticMeasure({
               <TableRow>
                 <TableCell align="center">Criteria</TableCell>
 
-                <TableCell align="center">Fuzzy synthetic measure</TableCell>
+                <TableCell align="center">Weigth</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{FuzzyCriteriaSyntheticMeasure}</TableBody>

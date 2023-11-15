@@ -14,9 +14,10 @@ import {
 
 export default function NormalizedDifference({
   names,
-
   normalizedFuzzyDifference,
+  optimization,
 }) {
+  console.log(normalizedFuzzyDifference);
   const NormalizedFuzzyDifference = names.alternativeNames.map(
     (alternativeName, alternativeIndex) => {
       const criterionCells = names.criteriaNames?.map(
