@@ -153,6 +153,7 @@ export default function NumberConfiguration({
     }
 
     handleSetupStep(true);
+    setIsDatasetNotUsed(false);
     setIsExpertsEstimationsOpen(true);
   };
 
@@ -169,8 +170,8 @@ export default function NumberConfiguration({
           gap: "8px",
         }}
       >
-        <DatasetConfiguration setIsDatasetNotUsed={setIsDatasetNotUsed} />
         <Typography variant="h6">Provide input numbers</Typography>
+        <DatasetConfiguration setIsDatasetNotUsed={setIsDatasetNotUsed} />
         <Box
           component="span"
           sx={{

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import {
   Table,
@@ -9,14 +9,20 @@ import {
   TableRow,
   Typography,
   Paper,
-  Button,
+  IconButton,
 } from "@mui/material";
+import { IoSync } from "react-icons/io5";
 
 export default function SyntheticMeasure({
   names,
   fuzzyCriteriaSyntheticMeasure,
   fuzzyAlternativesSyntheticMeasure,
 }) {
+  const [transposed, setTransposed] = useState(false);
+  const toggleTransposition = () => {
+    setTransposed(!transposed);
+  };
+
   const FuzzyCriteriaSyntheticMeasure = names.criteriaNames?.map(
     (criteriaName, criteriaIndex) => {
       const itemId = `c${criteriaIndex + 1}`;
@@ -46,51 +52,76 @@ export default function SyntheticMeasure({
     }
   );
 
-  const FuzzyAlternativesSyntheticMeasure = names.alternativeNames.map(
-    (alternativeName, alternativeIndex) => {
-      const criterionCells = names.criteriaNames?.map(
-        (criteriaName, criteriaIndex) => {
-          const itemId = `a${alternativeIndex + 1}-c${criteriaIndex + 1}`;
+  const renderLinguisticTerms = (terms) => (
+    <div
+      style={{
+        textAlign: "center",
+        padding: "5px",
+        border: "1px solid #51454f",
+        backgroundColor: "#232222",
+        margin: "3px",
+        borderRadius: "5px",
+      }}
+    >
+      {terms?.map((number) => number.toFixed(2)).join(", ")}
+    </div>
+  );
 
-          const linguisticTerms = (
-            <div
-              key={itemId}
-              style={{
-                textAlign: "center",
-                padding: "5px",
-                border: "1px solid #51454f",
-                backgroundColor: "#232222",
-                margin: "3px",
-                borderRadius: "5px",
-              }}
-            >
-              {fuzzyAlternativesSyntheticMeasure[itemId]
-                ?.map((number) => number.toFixed(2))
-                .join(", ")}
-            </div>
-          );
+  const tableData = transposed
+    ? names.criteriaNames.map((criteriaName, criteriaIndex) => ({
+        criteriaName,
+        alternatives: names.alternativeNames.map(
+          (alternativeName, alternativeIndex) => ({
+            alternativeName,
+            itemId: `a${alternativeIndex + 1}-c${criteriaIndex + 1}`,
+          })
+        ),
+      }))
+    : names.alternativeNames.map((alternativeName, alternativeIndex) => ({
+        alternativeName,
+        criteria: names.criteriaNames.map((criteriaName, criteriaIndex) => ({
+          criteriaName,
+          itemId: `a${alternativeIndex + 1}-c${criteriaIndex + 1}`,
+        })),
+      }));
 
-          return (
-            <TableCell
-              key={criteriaIndex}
-              align="center"
-              sx={{ minWidth: "115px" }}
-            >
-              {linguisticTerms}
-            </TableCell>
-          );
-        }
-      );
-
-      return (
-        <TableRow key={alternativeIndex}>
+  const fuzzyAlternativesSyntheticMeasureRows = tableData.map(
+    (row, rowIndex) => (
+      <TableRow key={rowIndex}>
+        {transposed ? (
           <TableCell align="center" sx={{ minWidth: "115px" }}>
-            {alternativeName}
+            {row.criteriaName}
           </TableCell>
-          {criterionCells}
-        </TableRow>
-      );
-    }
+        ) : (
+          <TableCell align="center" sx={{ minWidth: "115px" }}>
+            {row.alternativeName}
+          </TableCell>
+        )}
+        {transposed
+          ? row.alternatives.map((alternative, altIndex) => (
+              <TableCell
+                key={altIndex}
+                align="center"
+                sx={{ minWidth: "115px" }}
+              >
+                {renderLinguisticTerms(
+                  fuzzyAlternativesSyntheticMeasure[alternative.itemId]
+                )}
+              </TableCell>
+            ))
+          : row.criteria.map((criterion, critIndex) => (
+              <TableCell
+                key={critIndex}
+                align="center"
+                sx={{ minWidth: "115px" }}
+              >
+                {renderLinguisticTerms(
+                  fuzzyAlternativesSyntheticMeasure[criterion.itemId]
+                )}
+              </TableCell>
+            ))}
+      </TableRow>
+    )
   );
   return (
     <>
@@ -107,23 +138,33 @@ export default function SyntheticMeasure({
           marginTop: "20px",
         }}
       >
-        <Typography variant="h5">
-          Fuzzy alternatives synthetic measure
-        </Typography>
-
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h5">Alternatives synthetic measure</Typography>
+          <IconButton onClick={toggleTransposition}>
+            <IoSync />
+          </IconButton>
+        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Alternatives</TableCell>
-                {names.criteriaNames?.map((criteriaName, criteriaIndex) => (
-                  <TableCell align="center" key={criteriaIndex}>
-                    {criteriaName}
-                  </TableCell>
-                ))}
+                <TableCell align="center">
+                  {transposed ? "Criteria" : "Alternatives"}
+                </TableCell>
+                {transposed
+                  ? names.alternativeNames.map((name, index) => (
+                      <TableCell key={index} align="center">
+                        {name}
+                      </TableCell>
+                    ))
+                  : names.criteriaNames.map((name, index) => (
+                      <TableCell key={index} align="center">
+                        {name}
+                      </TableCell>
+                    ))}
               </TableRow>
             </TableHead>
-            <TableBody>{FuzzyAlternativesSyntheticMeasure}</TableBody>
+            <TableBody>{fuzzyAlternativesSyntheticMeasureRows}</TableBody>
           </Table>
         </TableContainer>
       </Box>

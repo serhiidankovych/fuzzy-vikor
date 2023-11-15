@@ -57,7 +57,6 @@ export default function DatasetConfiguration({ setIsDatasetNotUsed }) {
 
   return (
     <div>
-      <Typography>Data templates:</Typography>
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -65,7 +64,6 @@ export default function DatasetConfiguration({ setIsDatasetNotUsed }) {
         spacing={2}
         divider={<Divider orientation="vertical" flexItem />}
         sx={{
-          padding: "10px",
           borderRadius: "8px",
         }}
       >

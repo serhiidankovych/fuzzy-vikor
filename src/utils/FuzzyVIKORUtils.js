@@ -114,55 +114,60 @@ const getNormalizedFuzzyDifference = (
   )) {
     const [, criteriaKey] = key.split("-");
     const bestWorstCriterion = bestWorstCriteria[criteriaKey];
-
     const fuzzyDifference =
-      optimization[key] === "Max"
-        ? bestWorstCriterion.best.map(
-            (value, index) => value - fuzzyAlternativeSyntheticMeasure[index]
-          )
-        : bestWorstCriterion.worst.map(
-            (value, index) => fuzzyAlternativeSyntheticMeasure[index] - value
-          );
+      optimization[criteriaKey] === "Max"
+        ? [
+            bestWorstCriterion.best[0] - fuzzyAlternativeSyntheticMeasure[2],
+            bestWorstCriterion.best[1] - fuzzyAlternativeSyntheticMeasure[1],
+            bestWorstCriterion.best[2] - fuzzyAlternativeSyntheticMeasure[0],
+          ]
+        : [
+            fuzzyAlternativeSyntheticMeasure[0] - bestWorstCriterion.best[2],
+            fuzzyAlternativeSyntheticMeasure[1] - bestWorstCriterion.best[1],
+            fuzzyAlternativeSyntheticMeasure[2] - bestWorstCriterion.best[0],
+          ];
 
     const bestWorstDifference =
-      optimization[key] === "Max"
+      optimization[criteriaKey] === "Max"
         ? bestWorstCriterion.best[2] - bestWorstCriterion.worst[0]
         : bestWorstCriterion.worst[2] - bestWorstCriterion.best[0];
-
+    console.log(bestWorstDifference);
     let normalized = fuzzyDifference.map(
       (value) => value / bestWorstDifference
     );
 
     normalizedFuzzyDifference[key] = normalized;
+
+    console.log(key);
+    console.log("Fij:");
+    console.log(fuzzyAlternativeSyntheticMeasure);
+    console.log("BWC:");
+    console.log(bestWorstCriterion);
+    console.log("fuzzyDifference");
+
+    console.log(fuzzyDifference);
+    console.log("****");
+    console.log(optimization[criteriaKey]);
+    console.log([
+      bestWorstCriterion.best[0] - fuzzyAlternativeSyntheticMeasure[2],
+      bestWorstCriterion.best[1] - fuzzyAlternativeSyntheticMeasure[1],
+      bestWorstCriterion.best[2] - fuzzyAlternativeSyntheticMeasure[0],
+    ]);
+    console.log([
+      bestWorstCriterion.worst[0] - fuzzyAlternativeSyntheticMeasure[2],
+      bestWorstCriterion.worst[1] - fuzzyAlternativeSyntheticMeasure[1],
+      bestWorstCriterion.worst[2] - fuzzyAlternativeSyntheticMeasure[0],
+    ]);
+    console.log("bestWorstDifference");
+    console.log(bestWorstDifference);
+    console.log("N");
+    // console.log(normalized);
+    console.log("----------------------");
   }
 
+  console.log(normalizedFuzzyDifference);
+
   return normalizedFuzzyDifference;
-};
-
-const normalizedFuzzyDifference2 = (
-  fuzzySyntheticMeasure,
-  bestWorstValues,
-  optimization
-) => {
-  const result = {};
-
-  Object.keys(fuzzySyntheticMeasure).forEach((key) => {
-    const criterion = key.split("-")[1];
-    const isBenefit = optimization[criterion] === "Max";
-
-    const fStar = isBenefit
-      ? bestWorstValues[criterion].best
-      : bestWorstValues[criterion].worst;
-    const fij = fuzzySyntheticMeasure[key];
-
-    const numerator = isBenefit ? fStar[1] - fij[1] : fij[1] - fStar[1];
-    const denominator = isBenefit ? fStar[2] - fStar[0] : fStar[0] - fStar[2];
-
-    const dij = numerator / denominator;
-    result[key] = dij;
-  });
-  console.log(result);
-  return result;
 };
 
 export {
@@ -170,5 +175,4 @@ export {
   getFuzzySyntheticMeasure,
   getBestWorstCriteria,
   getNormalizedFuzzyDifference,
-  normalizedFuzzyDifference2,
 };
