@@ -3,7 +3,7 @@ export const numberOfCriteria = 4;
 export const numberOfLinguisticTermsForAlternatives = 6;
 export const numberOfLinguisticTermsForCriteria = 5;
 export const numberOfExperts = 3;
-const weightParameter = 0.6;
+const weightParameter = 0.5;
 export const names = {
   alternativeNames: ["SnoopDrone", "McFly", "Snitch", "Bird person", "Phantom"],
   criteriaNames: ["Stability", "Range", "Camera", "Security"],

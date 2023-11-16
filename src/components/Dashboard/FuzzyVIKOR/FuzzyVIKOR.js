@@ -5,6 +5,7 @@ import SyntheticMeasure from "./SyntheticMeasure";
 import BestWorstCriteria from "./BestWorstCriteria";
 import NormalizedDifference from "./NormalizedDifference";
 import SeparationMeasure from "./SeparationMeasure";
+import ComprehensiveScore from "./ComprehensiveScore";
 
 import { useSelector } from "react-redux";
 import {
@@ -13,10 +14,12 @@ import {
   getBestWorstCriteria,
   getNormalizedFuzzyDifference,
   getSeparationMeasures,
+  getComprehensiveScore,
 } from "../../../utils/FuzzyVIKORUtils";
 
 export default function FuzzyVIKOR() {
   const names = useSelector((state) => state.nameConfiguration);
+  const numbers = useSelector((state) => state.numberConfiguration);
   const expertsEstimations = useSelector(
     (state) => state.expertsEstimationConfiguration
   );
@@ -70,6 +73,11 @@ export default function FuzzyVIKOR() {
     fuzzyCriteriaSyntheticMeasure
   );
 
+  const comprehensiveScore = getComprehensiveScore(
+    separationMeasures,
+    numbers.weightParameter
+  );
+
   return (
     <>
       <GroupedEstimations
@@ -97,6 +105,10 @@ export default function FuzzyVIKOR() {
       />
       <SeparationMeasure
         separationMeasures={separationMeasures}
+        names={names}
+      />
+      <ComprehensiveScore
+        comprehensiveScore={comprehensiveScore}
         names={names}
       />
     </>

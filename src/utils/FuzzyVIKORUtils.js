@@ -209,10 +209,103 @@ const getSeparationMeasures = (
   return separationMeasures;
 };
 
+const getComprehensiveScore = (separationMeasures, weightParameter) => {
+  const comprehensiveScore = {};
+  const { sum, max } = separationMeasures;
+  let sumMin = [];
+  let sumMinLeft;
+  let sumMaxRight;
+
+  let maxMin = [];
+  let maxMinLeft;
+  let maxMaxRight;
+
+  const sumArray = Object.values(sum);
+  const maxArray = Object.values(max);
+
+  const leftSumElements = sumArray.map((subarray) => subarray[0]);
+  const middleSumElements = sumArray.map((subarray) => subarray[1]);
+  const rightSumElements = sumArray.map((subarray) => subarray[2]);
+
+  const leftMaxElements = maxArray.map((subarray) => subarray[0]);
+  const middleMaxElements = maxArray.map((subarray) => subarray[1]);
+  const rightMaxElements = maxArray.map((subarray) => subarray[2]);
+
+  const minSumFirstElement = Math.min(...leftSumElements);
+  const minSumMiddleElement = Math.min(...middleSumElements);
+  const minSumLastElement = Math.min(...rightSumElements);
+  const maxSumLastElement = Math.max(...rightSumElements);
+
+  const minMaxFirstElement = Math.min(...leftMaxElements);
+  const minMaxMiddleElement = Math.min(...middleMaxElements);
+  const minMaxLastElement = Math.min(...rightMaxElements);
+  const maxMaxLastElement = Math.max(...rightMaxElements);
+
+  sumMin = [minSumFirstElement, minSumMiddleElement, minSumLastElement];
+  sumMinLeft = minSumFirstElement;
+  sumMaxRight = maxSumLastElement;
+
+  maxMin = [minMaxFirstElement, minMaxMiddleElement, minMaxLastElement];
+  maxMinLeft = minMaxFirstElement;
+  maxMaxRight = maxMaxLastElement;
+
+  for (const key in separationMeasures.sum) {
+    const sumMeasures = separationMeasures.sum[key];
+    const maxMeasures = separationMeasures.max[key];
+
+    const sumDifference = [
+      sumMeasures[0] - sumMin[2],
+      sumMeasures[1] - sumMin[1],
+      sumMeasures[2] - sumMin[0],
+    ];
+    const sumRightLeftDifference = sumMaxRight - sumMinLeft;
+
+    const sumDivision = [
+      sumDifference[0] / sumRightLeftDifference,
+      sumDifference[1] / sumRightLeftDifference,
+      sumDifference[2] / sumRightLeftDifference,
+    ];
+
+    const sumWeightMultiplication = [
+      sumDivision[0] * weightParameter,
+      sumDivision[1] * weightParameter,
+      sumDivision[2] * weightParameter,
+    ];
+
+    const maxDifference = [
+      maxMeasures[0] - maxMin[2],
+      maxMeasures[1] - maxMin[1],
+      maxMeasures[2] - maxMin[0],
+    ];
+    const maxRightLeftDifference = maxMaxRight - maxMinLeft;
+
+    const maxDivision = [
+      maxDifference[0] / maxRightLeftDifference,
+      maxDifference[1] / maxRightLeftDifference,
+      maxDifference[2] / maxRightLeftDifference,
+    ];
+
+    const maxWeightMultiplication = [
+      maxDivision[0] * (1 - weightParameter),
+      maxDivision[1] * (1 - weightParameter),
+      maxDivision[2] * (1 - weightParameter),
+    ];
+    const additionMeasures = [
+      sumWeightMultiplication[0] + maxWeightMultiplication[0],
+      sumWeightMultiplication[1] + maxWeightMultiplication[1],
+      sumWeightMultiplication[2] + maxWeightMultiplication[2],
+    ];
+    comprehensiveScore[key] = additionMeasures;
+  }
+
+  return comprehensiveScore;
+};
+
 export {
   groupEstimations,
   getFuzzySyntheticMeasure,
   getBestWorstCriteria,
   getNormalizedFuzzyDifference,
   getSeparationMeasures,
+  getComprehensiveScore,
 };

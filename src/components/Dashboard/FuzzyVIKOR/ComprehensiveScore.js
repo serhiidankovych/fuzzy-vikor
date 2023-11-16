@@ -14,17 +14,8 @@ import {
 } from "@mui/material";
 
 import { renderLinguisticTerms } from "../../../utils/linguisticTermsUtils";
-export default function SeparationMeasure({ separationMeasures, names }) {
-  const SeparationMeasureSum = Object.values(separationMeasures.sum)?.map(
-    (measure, measureIndex) => {
-      return (
-        <TableCell align="center" key={measureIndex}>
-          {renderLinguisticTerms(measure)}
-        </TableCell>
-      );
-    }
-  );
-  const SeparationMeasureMax = Object.values(separationMeasures.max)?.map(
+export default function ComprehensiveScore({ comprehensiveScore, names }) {
+  const Score = Object.values(comprehensiveScore)?.map(
     (measure, measureIndex) => {
       return (
         <TableCell align="center" key={measureIndex}>
@@ -34,17 +25,11 @@ export default function SeparationMeasure({ separationMeasures, names }) {
     }
   );
 
-  const SeparationMeasureValues = (
-    <>
-      <TableRow>
-        <TableCell align="center">Weighted sum</TableCell>
-        {SeparationMeasureSum}
-      </TableRow>
-      <TableRow>
-        <TableCell align="center">Weighted max</TableCell>
-        {SeparationMeasureMax}
-      </TableRow>
-    </>
+  const ComprehensiveScoreValues = (
+    <TableRow>
+      <TableCell align="center">Comprehensive score</TableCell>
+      {Score}
+    </TableRow>
   );
 
   return (
@@ -61,13 +46,13 @@ export default function SeparationMeasure({ separationMeasures, names }) {
         marginTop: "20px",
       }}
     >
-      <Typography variant="h5">Separation measures</Typography>
+      <Typography variant="h5">Comprehensive score</Typography>
 
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Measure</TableCell>
+              <TableCell align="center">Score</TableCell>
               {names.alternativeNames?.map((measure, measureIndex) => (
                 <TableCell key={measureIndex} align="center">
                   {measure}
@@ -75,7 +60,7 @@ export default function SeparationMeasure({ separationMeasures, names }) {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>{SeparationMeasureValues}</TableBody>
+          <TableBody>{ComprehensiveScoreValues}</TableBody>
         </Table>
       </TableContainer>
     </Box>
