@@ -12,8 +12,8 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import { IoSync } from "react-icons/io5";
-
+import { IoRepeatSharp } from "react-icons/io5";
+import { renderLinguisticTerms } from "../../../utils/linguisticTermsUtils";
 export default function NormalizedDifference({
   names,
   normalizedFuzzyDifference,
@@ -23,21 +23,6 @@ export default function NormalizedDifference({
   const toggleTransposition = () => {
     setTransposed(!transposed);
   };
-
-  const renderLinguisticTerms = (terms) => (
-    <div
-      style={{
-        textAlign: "center",
-        padding: "5px",
-        border: "1px solid #51454f",
-        backgroundColor: "#232222",
-        margin: "3px",
-        borderRadius: "5px",
-      }}
-    >
-      {terms?.map((number) => number.toFixed(2)).join(", ")}
-    </div>
-  );
 
   const tableData = transposed
     ? names.criteriaNames.map((criteriaName, criteriaIndex) => ({
@@ -106,8 +91,8 @@ export default function NormalizedDifference({
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography variant="h5">Normalized fuzzy difference</Typography>
-        <IconButton onClick={toggleTransposition}>
-          <IoSync />
+        <IconButton onClick={toggleTransposition} color="green">
+          <IoRepeatSharp />
         </IconButton>
       </Box>
 

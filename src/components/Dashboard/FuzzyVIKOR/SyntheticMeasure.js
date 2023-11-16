@@ -11,7 +11,7 @@ import {
   Paper,
   IconButton,
 } from "@mui/material";
-import { IoSync } from "react-icons/io5";
+import { IoRepeatSharp } from "react-icons/io5";
 
 export default function SyntheticMeasure({
   names,
@@ -140,8 +140,8 @@ export default function SyntheticMeasure({
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography variant="h5">Alternatives synthetic measure</Typography>
-          <IconButton onClick={toggleTransposition}>
-            <IoSync />
+          <IconButton onClick={toggleTransposition} color="green">
+            <IoRepeatSharp />
           </IconButton>
         </Box>
         <TableContainer component={Paper}>

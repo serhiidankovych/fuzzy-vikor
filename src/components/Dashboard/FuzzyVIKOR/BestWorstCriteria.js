@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 import { IoTrendingDown, IoTrendingUp } from "react-icons/io5";
-
+import { renderLinguisticTerms } from "../../../utils/linguisticTermsUtils";
 export default function BestWorstCriteria({
   names,
   bestWorstCriteria,
@@ -27,36 +27,10 @@ export default function BestWorstCriteria({
         <TableRow key={criteriaIndex}>
           <TableCell align="center">{criteriaName}</TableCell>
           <TableCell align="center">
-            <div
-              style={{
-                textAlign: "center",
-                padding: "5px",
-                border: "1px solid #51454f",
-                backgroundColor: "#232222",
-                margin: "3px",
-                borderRadius: "5px",
-              }}
-            >
-              {bestWorstCriteria[itemId].best
-                ?.map((number) => number.toFixed(2))
-                .join(", ")}
-            </div>
+            {renderLinguisticTerms(bestWorstCriteria[itemId].best)}
           </TableCell>
           <TableCell align="center">
-            <div
-              style={{
-                textAlign: "center",
-                padding: "5px",
-                border: "1px solid #51454f",
-                backgroundColor: "#232222",
-                margin: "3px",
-                borderRadius: "5px",
-              }}
-            >
-              {bestWorstCriteria[itemId].worst
-                ?.map((number) => number.toFixed(2))
-                .join(", ")}
-            </div>
+            {renderLinguisticTerms(bestWorstCriteria[itemId].worst)}
           </TableCell>
           <TableCell align="center">
             <div

@@ -171,6 +171,21 @@ const checkLinguisticTermsConfines = (linguisticTerms, showToastMessage) => {
   return isValid;
 };
 
+const renderLinguisticTerms = (terms) => (
+  <div
+    style={{
+      textAlign: "center",
+      padding: "5px",
+      border: "1px solid #51454f",
+      backgroundColor: "#232222",
+      margin: "3px",
+      borderRadius: "5px",
+    }}
+  >
+    {terms?.map((number) => number.toFixed(2)).join(", ")}
+  </div>
+);
+
 export {
   transformToTriangleForm,
   normalizeValue,
@@ -179,4 +194,5 @@ export {
   handleLinguisticTermsChange,
   generateTriangularValues,
   checkLinguisticTermsConfines,
+  renderLinguisticTerms,
 };

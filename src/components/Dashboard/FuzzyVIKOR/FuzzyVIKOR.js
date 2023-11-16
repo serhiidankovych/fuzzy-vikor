@@ -4,6 +4,7 @@ import GroupedEstimations from "./GroupedEstimations";
 import SyntheticMeasure from "./SyntheticMeasure";
 import BestWorstCriteria from "./BestWorstCriteria";
 import NormalizedDifference from "./NormalizedDifference";
+import SeparationMeasure from "./SeparationMeasure";
 
 import { useSelector } from "react-redux";
 import {
@@ -11,6 +12,7 @@ import {
   getFuzzySyntheticMeasure,
   getBestWorstCriteria,
   getNormalizedFuzzyDifference,
+  getSeparationMeasures,
 } from "../../../utils/FuzzyVIKORUtils";
 
 export default function FuzzyVIKOR() {
@@ -63,6 +65,11 @@ export default function FuzzyVIKOR() {
     optimization.optimization
   );
 
+  const separationMeasures = getSeparationMeasures(
+    normalizedFuzzyDifference,
+    fuzzyCriteriaSyntheticMeasure
+  );
+
   return (
     <>
       <GroupedEstimations
@@ -87,6 +94,10 @@ export default function FuzzyVIKOR() {
         names={names}
         normalizedFuzzyDifference={normalizedFuzzyDifference}
         optimization={optimization.optimization}
+      />
+      <SeparationMeasure
+        separationMeasures={separationMeasures}
+        names={names}
       />
     </>
   );

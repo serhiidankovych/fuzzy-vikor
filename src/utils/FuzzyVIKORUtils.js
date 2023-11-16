@@ -69,6 +69,7 @@ const groupCriteria = (fuzzySyntheticMeasure) => {
   }
   return groupCriteria;
 };
+
 const getBestWorstCriteria = (fuzzySyntheticMeasure, optimization) => {
   const bestWorstCriteria = {};
 
@@ -131,43 +132,81 @@ const getNormalizedFuzzyDifference = (
       optimization[criteriaKey] === "Max"
         ? bestWorstCriterion.best[2] - bestWorstCriterion.worst[0]
         : bestWorstCriterion.worst[2] - bestWorstCriterion.best[0];
-    console.log(bestWorstDifference);
+
     let normalized = fuzzyDifference.map(
       (value) => value / bestWorstDifference
     );
 
     normalizedFuzzyDifference[key] = normalized;
-
-    console.log(key);
-    console.log("Fij:");
-    console.log(fuzzyAlternativeSyntheticMeasure);
-    console.log("BWC:");
-    console.log(bestWorstCriterion);
-    console.log("fuzzyDifference");
-
-    console.log(fuzzyDifference);
-    console.log("****");
-    console.log(optimization[criteriaKey]);
-    console.log([
-      bestWorstCriterion.best[0] - fuzzyAlternativeSyntheticMeasure[2],
-      bestWorstCriterion.best[1] - fuzzyAlternativeSyntheticMeasure[1],
-      bestWorstCriterion.best[2] - fuzzyAlternativeSyntheticMeasure[0],
-    ]);
-    console.log([
-      bestWorstCriterion.worst[0] - fuzzyAlternativeSyntheticMeasure[2],
-      bestWorstCriterion.worst[1] - fuzzyAlternativeSyntheticMeasure[1],
-      bestWorstCriterion.worst[2] - fuzzyAlternativeSyntheticMeasure[0],
-    ]);
-    console.log("bestWorstDifference");
-    console.log(bestWorstDifference);
-    console.log("N");
-    // console.log(normalized);
-    console.log("----------------------");
   }
 
-  console.log(normalizedFuzzyDifference);
-
   return normalizedFuzzyDifference;
+};
+
+const transposeArray = (array) => {
+  const rows = array.length;
+  const columns = array[0].length;
+  const transposedArray = [];
+  for (let j = 0; j < columns; j++) {
+    transposedArray[j] = [];
+    for (let i = 0; i < rows; i++) {
+      transposedArray[j][i] = array[i][j];
+    }
+  }
+  return transposedArray;
+};
+
+const sumArraysByIndex = (arrays) => {
+  return arrays.reduce(
+    (acc, curr) => curr.map((num, i) => acc[i] + num),
+    Array.from({ length: arrays[0].length }, () => 0)
+  );
+};
+
+const getSeparationMeasures = (
+  normalizedFuzzyDifference,
+  fuzzyCriteriaSyntheticMeasure
+) => {
+  const groupedNormalizedFuzzyDifference = groupCriteria(
+    normalizedFuzzyDifference
+  );
+
+  const multiplication = {};
+
+  for (const key in groupedNormalizedFuzzyDifference) {
+    const item = groupedNormalizedFuzzyDifference[key];
+    const weight = fuzzyCriteriaSyntheticMeasure[key];
+
+    multiplication[key] = item.map((difference) =>
+      difference.map((value, i) => value * weight[i])
+    );
+  }
+
+  const transposedMultiplication = transposeArray(
+    Object.values(multiplication)
+  );
+
+  const sum = {};
+  transposedMultiplication.forEach((row, index) => {
+    sum[`a${index + 1}`] = sumArraysByIndex(row);
+  });
+
+  const max = {};
+  transposedMultiplication.forEach((row, index) => {
+    const leftElements = row.map((subarray) => subarray[0]);
+    const middleElements = row.map((subarray) => subarray[1]);
+    const rightElements = row.map((subarray) => subarray[2]);
+    const maxFirstElement = Math.max(...leftElements);
+    const maxMiddleElement = Math.max(...middleElements);
+    const maxLastElement = Math.max(...rightElements);
+    max[`a${index + 1}`] = [maxFirstElement, maxMiddleElement, maxLastElement];
+  });
+  const separationMeasures = {
+    sum,
+    max,
+  };
+
+  return separationMeasures;
 };
 
 export {
@@ -175,4 +214,5 @@ export {
   getFuzzySyntheticMeasure,
   getBestWorstCriteria,
   getNormalizedFuzzyDifference,
+  getSeparationMeasures,
 };
