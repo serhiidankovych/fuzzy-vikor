@@ -6,6 +6,7 @@ import BestWorstCriteria from "./BestWorstCriteria";
 import NormalizedDifference from "./NormalizedDifference";
 import SeparationMeasure from "./SeparationMeasure";
 import ComprehensiveScore from "./ComprehensiveScore";
+import Defuzzification from "./Defuzzification";
 
 import { useSelector } from "react-redux";
 import {
@@ -15,6 +16,7 @@ import {
   getNormalizedFuzzyDifference,
   getSeparationMeasures,
   getComprehensiveScore,
+  getDefuzzificationByCentroidMethod,
 } from "../../../utils/FuzzyVIKORUtils";
 
 export default function FuzzyVIKOR() {
@@ -78,6 +80,11 @@ export default function FuzzyVIKOR() {
     numbers.weightParameter
   );
 
+  const defuzzificationByCentroidMethod = getDefuzzificationByCentroidMethod(
+    separationMeasures,
+    comprehensiveScore
+  );
+
   return (
     <>
       <GroupedEstimations
@@ -109,6 +116,10 @@ export default function FuzzyVIKOR() {
       />
       <ComprehensiveScore
         comprehensiveScore={comprehensiveScore}
+        names={names}
+      />
+      <Defuzzification
+        defuzzification={defuzzificationByCentroidMethod}
         names={names}
       />
     </>

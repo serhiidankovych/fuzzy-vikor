@@ -301,6 +301,31 @@ const getComprehensiveScore = (separationMeasures, weightParameter) => {
   return comprehensiveScore;
 };
 
+const getDefuzzificationByCentroidMethod = (
+  separationMeasures,
+  comprehensiveScore
+) => {
+  const { sum, max } = separationMeasures;
+
+  const centroid = (left, middle, right) => {
+    return (left + 2 * middle + right) / 4;
+  };
+  const defuzzify = (values) =>
+    Object.fromEntries(
+      Object.entries(values).map(([key, [left, middle, right]]) => [
+        key,
+        centroid(left, middle, right),
+      ])
+    );
+
+  const defuzzificationValues = {
+    defuzzifiedSum: defuzzify(sum),
+    defuzzifiedMax: defuzzify(max),
+    defuzzifiedComprehensiveScore: defuzzify(comprehensiveScore),
+  };
+
+  return defuzzificationValues;
+};
 export {
   groupEstimations,
   getFuzzySyntheticMeasure,
@@ -308,4 +333,5 @@ export {
   getNormalizedFuzzyDifference,
   getSeparationMeasures,
   getComprehensiveScore,
+  getDefuzzificationByCentroidMethod,
 };

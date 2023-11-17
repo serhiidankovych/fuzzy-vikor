@@ -138,7 +138,14 @@ export default function SyntheticMeasure({
           marginTop: "20px",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
           <Typography variant="h5">Alternatives synthetic measure</Typography>
           <IconButton onClick={toggleTransposition} color="green">
             <IoRepeatSharp />

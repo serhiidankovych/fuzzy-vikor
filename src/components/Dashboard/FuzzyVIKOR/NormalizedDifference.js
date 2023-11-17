@@ -89,7 +89,14 @@ export default function NormalizedDifference({
         marginTop: "20px",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
         <Typography variant="h5">Normalized fuzzy difference</Typography>
         <IconButton onClick={toggleTransposition} color="green">
           <IoRepeatSharp />
