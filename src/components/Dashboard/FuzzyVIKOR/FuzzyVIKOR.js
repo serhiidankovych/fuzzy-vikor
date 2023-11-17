@@ -7,6 +7,7 @@ import NormalizedDifference from "./NormalizedDifference";
 import SeparationMeasure from "./SeparationMeasure";
 import ComprehensiveScore from "./ComprehensiveScore";
 import Defuzzification from "./Defuzzification";
+import Rank from "./Rank";
 
 import { useSelector } from "react-redux";
 import {
@@ -17,6 +18,8 @@ import {
   getSeparationMeasures,
   getComprehensiveScore,
   getDefuzzificationByCentroidMethod,
+  getRankAlternatives,
+  getCompromiseSolutions,
 } from "../../../utils/FuzzyVIKORUtils";
 
 export default function FuzzyVIKOR() {
@@ -84,6 +87,13 @@ export default function FuzzyVIKOR() {
     separationMeasures,
     comprehensiveScore
   );
+  const rankedAlternatives = getRankAlternatives(
+    defuzzificationByCentroidMethod
+  );
+  const sompromiseSolution = getCompromiseSolutions(
+    rankedAlternatives,
+    numbers.numberOfAlternatives
+  );
 
   return (
     <>
@@ -121,6 +131,11 @@ export default function FuzzyVIKOR() {
       <Defuzzification
         defuzzification={defuzzificationByCentroidMethod}
         names={names}
+      />
+      <Rank
+        rank={rankedAlternatives}
+        names={names}
+        sompromiseSolution={sompromiseSolution}
       />
     </>
   );

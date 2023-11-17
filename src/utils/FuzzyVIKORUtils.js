@@ -326,6 +326,95 @@ const getDefuzzificationByCentroidMethod = (
 
   return defuzzificationValues;
 };
+
+const addComparisonSymbols = (rankedValues) => {
+  for (let i = 0; i < rankedValues.length - 1; i++) {
+    const currentRank = rankedValues[i][1];
+    const nextRank = rankedValues[i + 1][1];
+
+    rankedValues[i].push(currentRank === nextRank ? "=" : ">");
+  }
+
+  rankedValues[rankedValues.length - 1].push(" ");
+  return rankedValues;
+};
+
+const getRankAlternatives = (defuzzifiedValues) => {
+  const { defuzzifiedSum, defuzzifiedMax, defuzzifiedComprehensiveScore } =
+    defuzzifiedValues;
+  const rankedSum = Object.entries(defuzzifiedSum);
+  const rankedMax = Object.entries(defuzzifiedMax);
+  const rankedScore = Object.entries(defuzzifiedComprehensiveScore);
+  rankedSum.sort((a, b) => a[1] - b[1]);
+  rankedMax.sort((a, b) => a[1] - b[1]);
+  rankedScore.sort((a, b) => a[1] - b[1]);
+
+  const rankedAlternatives = {
+    rankedSum: addComparisonSymbols(rankedSum),
+    rankedMax: addComparisonSymbols(rankedMax),
+    rankedScore: addComparisonSymbols(rankedScore),
+  };
+
+  return rankedAlternatives;
+};
+
+const getCompromiseSolutions = (rankedAlternatives, numberOfAlternatives) => {
+  //Acceptable advantage
+  let acceptableAdvantageCondition = false;
+  const firstRankedAlternativeScore = rankedAlternatives.rankedScore[0][1];
+  const secondRankedAlternativeScore = rankedAlternatives.rankedScore[1][1];
+  const acceptableAdvantage =
+    secondRankedAlternativeScore - firstRankedAlternativeScore;
+
+  const discriminationPowerFactor = 1 / (numberOfAlternatives - 1);
+
+  if (acceptableAdvantage >= discriminationPowerFactor) {
+    acceptableAdvantageCondition = true;
+  }
+
+  const acceptableAdvantageAlternatives = [
+    rankedAlternatives.rankedScore[0],
+    rankedAlternatives.rankedScore[1],
+  ];
+
+  //Acceptable stability
+  let acceptableStabilityCondition = false;
+  const firstRankedAlternativeScoreKey = rankedAlternatives.rankedScore[0][0];
+  const firstRankedAlternativeSumKey = rankedAlternatives.rankedSum[0][0];
+  const firstRankedAlternativeMaxKey = rankedAlternatives.rankedMax[0][0];
+
+  if (
+    firstRankedAlternativeScoreKey === firstRankedAlternativeSumKey ||
+    firstRankedAlternativeScoreKey === firstRankedAlternativeMaxKey
+  ) {
+    acceptableStabilityCondition = true;
+  }
+  const lastRankedAlternativeScore =
+    rankedAlternatives.rankedScore[
+      rankedAlternatives.rankedScore.length - 1
+    ][1];
+
+  const acceptableStabilityAlternatives = [];
+
+  for (let i = 0; i < rankedAlternatives.rankedScore.length; i++) {
+    if (
+      lastRankedAlternativeScore - firstRankedAlternativeScore <
+      discriminationPowerFactor
+    ) {
+      acceptableStabilityAlternatives.push(rankedAlternatives.rankedScore[i]);
+    }
+  }
+  const compromiseSolutions = {
+    acceptableAdvantage,
+    discriminationPowerFactor,
+    acceptableAdvantageCondition,
+    acceptableStabilityCondition,
+    acceptableAdvantageAlternatives,
+    acceptableStabilityAlternatives,
+  };
+  return compromiseSolutions;
+};
+
 export {
   groupEstimations,
   getFuzzySyntheticMeasure,
@@ -334,4 +423,6 @@ export {
   getSeparationMeasures,
   getComprehensiveScore,
   getDefuzzificationByCentroidMethod,
+  getRankAlternatives,
+  getCompromiseSolutions,
 };

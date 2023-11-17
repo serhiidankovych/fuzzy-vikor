@@ -16,7 +16,6 @@ import {
   Select,
 } from "@mui/material";
 
-import { renderLinguisticTerms } from "../../../utils/linguisticTermsUtils";
 export default function Defuzzification({ defuzzification, names }) {
   const [defuzzificationMethod, setDefuzzificationMethod] =
     React.useState("Centroid Method");
@@ -39,7 +38,7 @@ export default function Defuzzification({ defuzzification, names }) {
               borderRadius: "5px",
             }}
           >
-            {defuzzifiedValue.toFixed(5)}
+            {`      ${defuzzifiedValue.toFixed(4)}      `}
           </div>
         </TableCell>
       )
@@ -62,6 +61,7 @@ export default function Defuzzification({ defuzzification, names }) {
         <TableCell align="center">Defuzzified sum</TableCell>
         {DefuzzificationSum}
       </TableRow>
+
       <TableRow>
         <TableCell align="center">Defuzzified max</TableCell>
         {DefuzzificationMax}
@@ -111,7 +111,7 @@ export default function Defuzzification({ defuzzification, names }) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Measure</TableCell>
+              <TableCell align="center">Defuzzified value</TableCell>
               {names.alternativeNames?.map(
                 (defuzzifiedValue, defuzzifiedValueIndex) => (
                   <TableCell key={defuzzifiedValueIndex} align="center">
