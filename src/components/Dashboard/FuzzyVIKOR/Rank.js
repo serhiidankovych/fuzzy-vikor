@@ -258,6 +258,8 @@ export default function Rank({ rank, names, sompromiseSolution }) {
                     flexDirection: "row",
                     alignItems: "center",
                     gap: "3px",
+                    flexWrap: "nowrap",
+                    fontSize: "10px",
                   }}
                 >
                   {alternativeScore}-{firstAlternativeScore}
