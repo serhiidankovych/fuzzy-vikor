@@ -58,16 +58,16 @@ export default function Defuzzification({ defuzzification, names }) {
   const DefuzzificationValues = (
     <>
       <TableRow>
-        <TableCell align="center">Defuzzified sum</TableCell>
+        <TableCell align="center">Defuzzified sum(S)</TableCell>
         {DefuzzificationSum}
       </TableRow>
 
       <TableRow>
-        <TableCell align="center">Defuzzified max</TableCell>
+        <TableCell align="center">Defuzzified max(R)</TableCell>
         {DefuzzificationMax}
       </TableRow>
       <TableRow>
-        <TableCell align="center">Defuzzified score</TableCell>
+        <TableCell align="center">Defuzzified score(Q)</TableCell>
         {DefuzzificationScore}
       </TableRow>
     </>
@@ -111,7 +111,7 @@ export default function Defuzzification({ defuzzification, names }) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Defuzzified value</TableCell>
+              <TableCell align="center">Defuzzified values</TableCell>
               {names.alternativeNames?.map(
                 (defuzzifiedValue, defuzzifiedValueIndex) => (
                   <TableCell key={defuzzifiedValueIndex} align="center">

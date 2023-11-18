@@ -27,7 +27,7 @@ export default function ComprehensiveScore({ comprehensiveScore, names }) {
 
   const ComprehensiveScoreValues = (
     <TableRow>
-      <TableCell align="center">Comprehensive score</TableCell>
+      <TableCell align="center">Comprehensive score(Q)</TableCell>
       {Score}
     </TableRow>
   );
@@ -52,7 +52,7 @@ export default function ComprehensiveScore({ comprehensiveScore, names }) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Score</TableCell>
+              <TableCell align="center">Scores</TableCell>
               {names.alternativeNames?.map((measure, measureIndex) => (
                 <TableCell key={measureIndex} align="center">
                   {measure}

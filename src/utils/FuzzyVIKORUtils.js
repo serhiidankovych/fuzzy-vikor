@@ -395,15 +395,22 @@ const getCompromiseSolutions = (rankedAlternatives, numberOfAlternatives) => {
     ][1];
 
   const acceptableStabilityAlternatives = [];
-
+  const differenceFirstScore = [];
+  const differenceFirstScoreCondition = [];
   for (let i = 0; i < rankedAlternatives.rankedScore.length; i++) {
-    if (
-      lastRankedAlternativeScore - firstRankedAlternativeScore <
-      discriminationPowerFactor
-    ) {
+    const currentAlternativeScore = rankedAlternatives.rankedScore[i][1];
+    const currentDifference =
+      currentAlternativeScore - firstRankedAlternativeScore;
+    differenceFirstScore.push(currentDifference);
+
+    if (currentDifference < discriminationPowerFactor) {
       acceptableStabilityAlternatives.push(rankedAlternatives.rankedScore[i]);
+      differenceFirstScoreCondition.push(true);
+    } else {
+      differenceFirstScoreCondition.push(false);
     }
   }
+
   const compromiseSolutions = {
     acceptableAdvantage,
     discriminationPowerFactor,
@@ -411,7 +418,13 @@ const getCompromiseSolutions = (rankedAlternatives, numberOfAlternatives) => {
     acceptableStabilityCondition,
     acceptableAdvantageAlternatives,
     acceptableStabilityAlternatives,
+    firstRankedAlternativeScore: rankedAlternatives.rankedScore[0],
+    firstRankedAlternativeSum: rankedAlternatives.rankedSum[0],
+    firstRankedAlternativeMax: rankedAlternatives.rankedMax[0],
+    differenceFirstScore,
+    differenceFirstScoreCondition,
   };
+
   return compromiseSolutions;
 };
 

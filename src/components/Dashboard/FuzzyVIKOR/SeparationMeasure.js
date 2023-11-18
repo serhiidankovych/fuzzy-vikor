@@ -37,11 +37,11 @@ export default function SeparationMeasure({ separationMeasures, names }) {
   const SeparationMeasureValues = (
     <>
       <TableRow>
-        <TableCell align="center">Weighted sum</TableCell>
+        <TableCell align="center">Weighted sum(S)</TableCell>
         {SeparationMeasureSum}
       </TableRow>
       <TableRow>
-        <TableCell align="center">Weighted max</TableCell>
+        <TableCell align="center">Weighted max(R)</TableCell>
         {SeparationMeasureMax}
       </TableRow>
     </>
@@ -67,7 +67,7 @@ export default function SeparationMeasure({ separationMeasures, names }) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Measure</TableCell>
+              <TableCell align="center">Measures</TableCell>
               {names.alternativeNames?.map((measure, measureIndex) => (
                 <TableCell key={measureIndex} align="center">
                   {measure}

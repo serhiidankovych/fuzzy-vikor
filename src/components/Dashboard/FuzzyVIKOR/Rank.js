@@ -10,13 +10,28 @@ import {
   TableRow,
   Typography,
   Paper,
-  Grid,
+  IconButton,
   Button,
 } from "@mui/material";
-import { IoChevronForward } from "react-icons/io5";
-import { IoChevronDown, IoChevronUp } from "react-icons/io5";
+import {
+  IoChevronForward,
+  IoChevronDown,
+  IoChevronUp,
+  IoCheckmark,
+  IoClose,
+} from "react-icons/io5";
+
 export default function Rank({ rank, names, sompromiseSolution }) {
   const [isDetailsShown, setIsDetailsShown] = React.useState(false);
+  const [isCompromiseConditionshown, setIsCompromiseConditionsShown] =
+    React.useState(false);
+
+  const [, firstRankedAlternativeScore] =
+    sompromiseSolution.firstRankedAlternativeScore[0].split("");
+  const [, firstRankedAlternativeSum] =
+    sompromiseSolution.firstRankedAlternativeSum[0].split("");
+  const [, firstRankedAlternativeMax] =
+    sompromiseSolution.firstRankedAlternativeMax[0].split("");
   const renderRankValues = (rankedValues) => {
     return Object.values(rankedValues)?.map((rankedValue, rankedValueIndex) => {
       const [, alternativeKey] = rankedValue[0].split("");
@@ -61,25 +76,97 @@ export default function Rank({ rank, names, sompromiseSolution }) {
   const RankValues = (
     <>
       <TableRow>
-        <TableCell align="center">Ranked sum</TableCell>
+        <TableCell align="center">Ranked sum(S)</TableCell>
         {RankSum}
       </TableRow>
       <TableRow>
-        <TableCell align="center">Ranked max</TableCell>
+        <TableCell align="center">Ranked max(R)</TableCell>
         {RankMax}
       </TableRow>
       <TableRow>
-        <TableCell align="center">Ranked score</TableCell>
+        <TableCell align="center">Ranked score(Q)</TableCell>
         {RankScore}
       </TableRow>
     </>
+  );
+  const renderFormula = (title, spanName, values) => {
+    return (
+      <p>
+        <span>{title}</span>
+        <sub
+          style={{
+            fontFamily: "Montserrat",
+            padding: "2px",
+          }}
+        >
+          {spanName && `${spanName}`}
+        </sub>
+        {values && `(${values})`}
+      </p>
+    );
+  };
+  const StabilityCondition = (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: "3px",
+        justifyContent: "center",
+      }}
+    >
+      {renderFormula(
+        "Q",
+        names.alternativeNames[firstRankedAlternativeScore - 1],
+        ""
+      )}
+      = Best(
+      {renderFormula(
+        "S",
+        names.alternativeNames[firstRankedAlternativeSum - 1],
+        ""
+      )}
+      {" || "}
+      {renderFormula(
+        "R",
+        names.alternativeNames[firstRankedAlternativeMax - 1],
+        ""
+      )}
+      )
+    </div>
+  );
+
+  const AdvantageCondition = (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: "3px",
+        justifyContent: "center",
+      }}
+    >
+      {renderFormula(
+        "Adv",
+        "",
+        sompromiseSolution.acceptableAdvantage.toFixed(2)
+      )}
+      ≥
+      {renderFormula(
+        "DQ",
+        "",
+        sompromiseSolution.discriminationPowerFactor.toFixed(2)
+      )}
+    </div>
   );
 
   const CompromiseSolutionBox = ({
     title,
     condition,
+    conditionName,
     conditionColor,
     alternatives,
+    isExtraCondition,
   }) => (
     <Box
       sx={{
@@ -97,6 +184,7 @@ export default function Rank({ rank, names, sompromiseSolution }) {
           backgroundColor: "#0f0f0f",
         }}
       >
+        {conditionName}
         <Box
           sx={{
             display: "flex",
@@ -105,20 +193,88 @@ export default function Rank({ rank, names, sompromiseSolution }) {
             alignItems: "flex-start",
           }}
         >
-          <Typography>Condition:</Typography>
+          <Typography> Condition: </Typography>
           <Typography color={conditionColor}>
             {condition ? "true" : "false"}
           </Typography>
         </Box>
-        <Typography>
-          Acceptable advantage:{" "}
-          {sompromiseSolution.acceptableAdvantage.toFixed(2)}
+        {isExtraCondition && (
+          <Box
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+          >
+            <Typography>Compromise conditions</Typography>
+
+            <IconButton
+              color="green"
+              onClick={() => setIsCompromiseConditionsShown((prev) => !prev)}
+            >
+              {isCompromiseConditionshown ? <IoChevronUp /> : <IoChevronDown />}
+            </IconButton>
+          </Box>
+        )}
+        {isExtraCondition &&
+          isCompromiseConditionshown &&
+          alternatives.map(([solution, score], index) => {
+            const [, alternativeKey] = solution.split("");
+            const alternativeName = names.alternativeNames[alternativeKey - 1];
+            const firstRankedAlternativeName =
+              names.alternativeNames[firstRankedAlternativeScore - 1];
+
+            const discriminationPowerFactor =
+              sompromiseSolution.discriminationPowerFactor;
+
+            const differenceFirstScoreCondition =
+              sompromiseSolution.differenceFirstScoreCondition;
+
+            const alternativeScore = renderFormula(
+              "Q",
+              alternativeName,
+              score.toFixed(2)
+            );
+            const firstAlternativeScore = renderFormula(
+              "Q",
+              firstRankedAlternativeName,
+              alternatives[0][1].toFixed(2)
+            );
+
+            return (
+              <div
+                key={index}
+                style={{
+                  textAlign: "center",
+                  padding: "12px",
+                  border: "1px solid #51454f",
+                  marginTop: "5px",
+                  borderRadius: "5px",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: "3px",
+                  }}
+                >
+                  {alternativeScore}-{firstAlternativeScore}
+                  {` < DQ(${discriminationPowerFactor.toFixed(2)})`}
+                </div>
+                {differenceFirstScoreCondition ? (
+                  <IoCheckmark color="lime" />
+                ) : (
+                  <IoClose color="red" />
+                )}
+              </div>
+            );
+          })}
+
+        <Typography sx={{ marginTop: "10px" }}>
+          Compromise solutions:
         </Typography>
-        <Typography>
-          Discrimination power factor:{" "}
-          {sompromiseSolution.discriminationPowerFactor.toFixed(2)}
-        </Typography>
-        <Typography>Compromise solutions:</Typography>
         <Box
           sx={{
             display: "flex",
@@ -197,8 +353,26 @@ export default function Rank({ rank, names, sompromiseSolution }) {
           >
             <Box sx={{ flex: 1 }}>
               <CompromiseSolutionBox
+                title="Acceptable stability"
+                condition={sompromiseSolution.acceptableStabilityCondition}
+                conditionName={StabilityCondition}
+                conditionColor={
+                  sompromiseSolution.acceptableStabilityCondition
+                    ? "lime"
+                    : "red"
+                }
+                isExtraCondition={true}
+                isCompromiseConditionshown={isCompromiseConditionshown}
+                alternatives={
+                  sompromiseSolution.acceptableStabilityAlternatives
+                }
+              />
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <CompromiseSolutionBox
                 title="Acceptable advantage"
                 condition={sompromiseSolution.acceptableAdvantageCondition}
+                conditionName={AdvantageCondition}
                 conditionColor={
                   sompromiseSolution.acceptableAdvantageCondition
                     ? "lime"
@@ -207,20 +381,7 @@ export default function Rank({ rank, names, sompromiseSolution }) {
                 alternatives={
                   sompromiseSolution.acceptableAdvantageAlternatives
                 }
-              />
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <CompromiseSolutionBox
-                title="Acceptable stability"
-                condition={sompromiseSolution.acceptableStabilityCondition}
-                conditionColor={
-                  sompromiseSolution.acceptableStabilityCondition
-                    ? "lime"
-                    : "red"
-                }
-                alternatives={
-                  sompromiseSolution.acceptableStabilityAlternatives
-                }
+                isExtraCondition={false}
               />
             </Box>
           </Box>
