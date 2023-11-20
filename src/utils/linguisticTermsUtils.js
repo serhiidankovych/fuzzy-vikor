@@ -143,27 +143,25 @@ const generateTriangularValues = (numTerms, x) => {
   return values;
 };
 
-const checkLinguisticTermsConfines = (linguisticTerms, showToastMessage) => {
+const checkLinguisticTermsConfines = (
+  linguisticTerms,
+  showToastMessage,
+  names
+) => {
   let isValid = true; // Assume all inputs are valid initially
 
-  linguisticTerms?.forEach((linguisticTerm) => {
+  linguisticTerms?.forEach((linguisticTerm, index) => {
     if (linguisticTerm?.confines.length !== 3) {
-      showToastMessage(
-        "Wrong confines for " + linguisticTerm.linguisticTerm,
-        "error"
-      );
+      showToastMessage("Wrong confines for " + names[index], "error");
       isValid = false;
       return;
     }
   });
-  linguisticTerms?.forEach((linguisticTerm) => {
+  linguisticTerms?.forEach((linguisticTerm, index) => {
     const confines = linguisticTerm?.confines;
 
     if (!(confines[0] <= confines[1] && confines[1] <= confines[2])) {
-      showToastMessage(
-        "Wrong confines values for " + linguisticTerm.linguisticTerm,
-        "error"
-      );
+      showToastMessage("Wrong confines values for " + names[index], "error");
       isValid = false;
     }
   });

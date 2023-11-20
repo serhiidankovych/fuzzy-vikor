@@ -48,7 +48,11 @@ export default function AlternativeConfiguration({ handleSetupStep }) {
   }, []);
 
   const handleSetAlternative = () => {
-    const isValid = checkLinguisticTermsConfines(alternative, showToastMessage);
+    const isValid = checkLinguisticTermsConfines(
+      alternative,
+      showToastMessage,
+      names.linguisticTermsForAlternativesNames
+    );
 
     if (isValid) {
       dispatch(setAlternativeConfiguration(alternative));

@@ -11,7 +11,10 @@ import { IoArrowForward } from "react-icons/io5";
 import DatasetConfiguration from "./DatasetConfiguration";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setNumberConfiguration } from "../../../store/actions/numberConfigurationActions";
+import {
+  setNumberConfiguration,
+  updateWeightParameter,
+} from "../../../store/actions/numberConfigurationActions";
 import { setNameConfiguration } from "../../../store/actions/nameConfigurationActions";
 import { setOptimizationConfiguration } from "../../../store/actions/optimizationConfigurationActions";
 import { setExpertsEstimationConfiguration } from "../../../store/actions/expertsEstimationConfigurationActions";
@@ -64,7 +67,7 @@ export default function NumberConfiguration({
       initialNumbers.numberOfLinguisticTermsForCriteria || 3
     );
     setNumberOfExperts(initialNumbers.numberOfExperts || 3);
-    setWeightParameter(initialNumbers.weightParameter || 0.6);
+    setWeightParameter(initialNumbers.weightParameter);
   }, [initialNumbers]);
 
   // Generate data
@@ -150,6 +153,9 @@ export default function NumberConfiguration({
           )
         )
       );
+    } else {
+      dispatch(updateWeightParameter(weightParameter));
+      setWeightParameter(weightParameter);
     }
 
     handleSetupStep(true);
@@ -329,7 +335,7 @@ export default function NumberConfiguration({
             max={1}
             onChange={(e) => setWeightParameter(e.target.value)}
             color="green"
-            disabled={!isDatasetNotUsed}
+            // disabled={!isDatasetNotUsed}
           />
         </Box>
 

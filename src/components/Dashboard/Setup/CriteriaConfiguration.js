@@ -47,7 +47,11 @@ export default function CriteriaConfiguration({ handleSetupStep }) {
   }, []);
 
   const handleSetCriteria = () => {
-    const isValid = checkLinguisticTermsConfines(criteria, showToastMessage);
+    const isValid = checkLinguisticTermsConfines(
+      criteria,
+      showToastMessage,
+      names.linguisticTermsForCriteriaNames
+    );
     if (isValid) {
       dispatch(setCriteriaConfiguration(criteria));
 

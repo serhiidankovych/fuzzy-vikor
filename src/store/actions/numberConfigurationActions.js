@@ -19,3 +19,14 @@ export const setNumberConfiguration = (
     },
   };
 };
+
+export const UPDATE_WEIGHT_PARAMETER = "UPDATE_WEIGHT_PARAMETER";
+
+export const updateWeightParameter = (weightParameter) => {
+  return {
+    type: UPDATE_WEIGHT_PARAMETER,
+    payload: {
+      weightParameter,
+    },
+  };
+};

@@ -1,4 +1,7 @@
-import { SET_NUMBER } from "../actions/numberConfigurationActions";
+import {
+  SET_NUMBER,
+  UPDATE_WEIGHT_PARAMETER,
+} from "../actions/numberConfigurationActions";
 
 const initialState = {
   numberOfAlternatives: 4,
@@ -8,7 +11,6 @@ const initialState = {
   numberOfExperts: 3,
   weightParameter: 0.5,
 };
-
 const numberConfigurationReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_NUMBER:
@@ -21,6 +23,11 @@ const numberConfigurationReducer = (state = initialState, action) => {
         numberOfLinguisticTermsForCriteria:
           action.payload.numberOfLinguisticTermsForCriteria,
         numberOfExperts: action.payload.numberOfExperts,
+        weightParameter: action.payload.weightParameter,
+      };
+    case UPDATE_WEIGHT_PARAMETER:
+      return {
+        ...state,
         weightParameter: action.payload.weightParameter,
       };
     default:
